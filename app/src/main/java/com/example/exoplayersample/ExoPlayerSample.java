@@ -4,8 +4,16 @@ import android.graphics.SurfaceTexture;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Surface;
 import android.view.TextureView;
+
+import com.example.exoplayersample.util.FileUtils;
+import com.example.exoplayersample.video.PlayerFactory;
+import com.example.exoplayersample.video.PlayerManager;
+import com.example.exoplayersample.video.listener.PlayerListener;
+
+import java.io.File;
 
 public class ExoPlayerSample extends AppCompatActivity implements TextureView.SurfaceTextureListener {
 
@@ -13,6 +21,9 @@ public class ExoPlayerSample extends AppCompatActivity implements TextureView.Su
     private PlayerManager mPlayerManager;
 
     private Surface mSurface;
+    private static final String TAG = "ExoPlayerSample";
+
+    private static String PLAY_URL2 = "http://img.locker.cmcm.com/livelock/uservideo/90f1353176bc83dffe2f246eba496c7a";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,8 +34,42 @@ public class ExoPlayerSample extends AppCompatActivity implements TextureView.Su
         mPlayerManager = PlayerFactory.newInstance();
 
         mPlayerManager.init();
-        Uri uri = Uri.parse("http://clips.vorwaerts-gmbh.de/VfE_html5.mp4");
+        Uri uri = Uri.parse(getVideoPlayPath());
         mPlayerManager.setPlayUri(uri);
+        mPlayerManager.setPlayerListener(new PlayerListener() {
+            @Override
+            public void onBuffering() {
+                Log.d(TAG, "onBuffering");
+            }
+
+            @Override
+            public void onPlayEnd() {
+                Log.d(TAG, "onPlayEnd");
+                Uri uri = Uri.parse(getVideoPlayPath());
+                mPlayerManager.setPlayUri(uri);
+                mPlayerManager.play();
+            }
+
+            @Override
+            public void onStartPlay() {
+                Log.d(TAG, "onStatPlay");
+            }
+
+            @Override
+            public void onError(Exception error) {
+                Log.d(TAG, "onError:" + error.getMessage());
+            }
+        });
+    }
+
+    private String getVideoPlayPath() {
+        String localPath = FileUtils.convertUrlToLocalPath(PLAY_URL2);
+        File file = new File(localPath);
+        if (file.exists()) {
+            return localPath;
+        } else {
+            return PLAY_URL2;
+        }
     }
 
     @Override
@@ -44,14 +89,15 @@ public class ExoPlayerSample extends AppCompatActivity implements TextureView.Su
 
     @Override
     public boolean onSurfaceTextureDestroyed(SurfaceTexture surfaceTexture) {
-        return false;
+        if (mSurface != null) {
+            mSurface.release();
+        }
+        return true;
     }
 
     @Override
     public void onSurfaceTextureUpdated(SurfaceTexture surfaceTexture) {
-        if (mSurface != null) {
-            mSurface.release();
-        }
+
     }
 
     @Override

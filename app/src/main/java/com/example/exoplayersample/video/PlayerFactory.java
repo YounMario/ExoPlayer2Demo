@@ -1,4 +1,4 @@
-package com.example.exoplayersample;
+package com.example.exoplayersample.video;
 
 /**
  * Created by 龙泉 on 2016/12/26.

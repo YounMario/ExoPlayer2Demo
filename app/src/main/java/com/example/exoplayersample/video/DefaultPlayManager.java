@@ -1,11 +1,16 @@
-package com.example.exoplayersample;
+package com.example.exoplayersample.video;
 
 import android.net.Uri;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Surface;
 
+import com.example.exoplayersample.App;
+import com.example.exoplayersample.bean.CacheGlue;
 import com.example.exoplayersample.okhttp.CacheHttpClient;
+import com.example.exoplayersample.okhttp.OkHttpDataSourceWrapper;
+import com.example.exoplayersample.video.listener.PlayerListener;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
@@ -24,9 +29,9 @@ import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.upstream.BandwidthMeter;
+import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
-import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
-import com.google.android.exoplayer2.upstream.HttpDataSource;
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
 /**
@@ -40,6 +45,7 @@ public class DefaultPlayManager implements PlayerManager, ExoPlayer.EventListene
 
     private Uri mUri;
     private Surface mSurface;
+    private PlayerListener mListener;
 
     @Override
     public void init() {
@@ -71,6 +77,11 @@ public class DefaultPlayManager implements PlayerManager, ExoPlayer.EventListene
         }
     }
 
+    @Override
+    public void setPlayerListener(PlayerListener listener) {
+        this.mListener = listener;
+    }
+
     private void prepare() {
         if (simpleExoPlayer != null) {
             simpleExoPlayer.release();
@@ -82,15 +93,24 @@ public class DefaultPlayManager implements PlayerManager, ExoPlayer.EventListene
     }
 
     private MediaSource buildMediaSource(Uri uri) {
-        return new ExtractorMediaSource(uri, getDataSourceFactory(true), new DefaultExtractorsFactory(),
+        boolean useOkHttp;
+        String scheme = uri.getScheme();
+        if (!TextUtils.isEmpty(scheme) && scheme.contains("http")) {
+            useOkHttp = true;
+        } else {
+            useOkHttp = false;
+        }
+        return new ExtractorMediaSource(uri, getDataSourceFactory(useOkHttp, uri), new DefaultExtractorsFactory(),
                 mainHandler, null);
     }
 
-    private HttpDataSource.Factory getDataSourceFactory(boolean useOkhttp) {
+    private DataSource.Factory getDataSourceFactory(boolean useOkhttp, Uri uri) {
         if (useOkhttp) {
-            return new OkHttpDataSourceFactory(CacheHttpClient.getInstance(), mUserAgent, new DefaultBandwidthMeter());
+            CacheGlue cacheGlue = new CacheGlue(uri);
+            CacheHttpClient cacheHttpClient = new CacheHttpClient(cacheGlue);
+            return new OkHttpDataSourceWrapper(cacheGlue, new OkHttpDataSourceFactory(cacheHttpClient.getInstance(), mUserAgent, new DefaultBandwidthMeter()));
         } else {
-            return new DefaultHttpDataSourceFactory(mUserAgent, new DefaultBandwidthMeter());
+            return new DefaultDataSourceFactory(App.getInstance(), mUserAgent);
         }
     }
 
@@ -106,6 +126,7 @@ public class DefaultPlayManager implements PlayerManager, ExoPlayer.EventListene
 
         return ExoPlayerFactory.newSimpleInstance(App.getInstance(), trackSelector, loadControl);
     }
+
 
     @Override
     public void onTimelineChanged(Timeline timeline, Object manifest) {
@@ -128,16 +149,24 @@ public class DefaultPlayManager implements PlayerManager, ExoPlayer.EventListene
         switch (playbackState) {
             case ExoPlayer.STATE_BUFFERING:
                 text += "buffering";
+                if (mListener != null) {
+                    mListener.onBuffering();
+                }
                 break;
             case ExoPlayer.STATE_ENDED:
                 text += "ended";
-                simpleExoPlayer.seekTo(0);
+                if (mListener != null) {
+                    mListener.onPlayEnd();
+                }
                 break;
             case ExoPlayer.STATE_IDLE:
                 text += "idle";
                 break;
             case ExoPlayer.STATE_READY:
                 text += "ready";
+                if (mListener != null && playWhenReady) {
+                    mListener.onStartPlay();
+                }
                 break;
             default:
                 text += "unknown";
@@ -148,7 +177,9 @@ public class DefaultPlayManager implements PlayerManager, ExoPlayer.EventListene
 
     @Override
     public void onPlayerError(ExoPlaybackException error) {
-
+        if (mListener != null) {
+            mListener.onError(error);
+        }
     }
 
     @Override
