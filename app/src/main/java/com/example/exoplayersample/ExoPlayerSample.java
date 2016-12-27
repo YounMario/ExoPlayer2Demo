@@ -23,7 +23,7 @@ public class ExoPlayerSample extends AppCompatActivity implements TextureView.Su
         mPlayerManager = PlayerFactory.newInstance();
 
         mPlayerManager.init();
-        Uri uri = Uri.parse("http://img.locker.cmcm.com/livelock/uservideo/90f1353176bc83dffe2f246eba496c7a");
+        Uri uri = Uri.parse("http://clips.vorwaerts-gmbh.de/VfE_html5.mp4");
         mPlayerManager.setPlayUri(uri);
     }
 
