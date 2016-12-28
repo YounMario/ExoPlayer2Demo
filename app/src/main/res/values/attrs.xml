@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="VideoProgressBar">
+        <attr name="progress_height" format="dimension" />
+        <attr name="thumb_radius" format="dimension" />
+    </declare-styleable>
+</resources>

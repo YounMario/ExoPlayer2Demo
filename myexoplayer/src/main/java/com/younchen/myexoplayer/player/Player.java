@@ -9,9 +9,7 @@ import com.younchen.myexoplayer.player.listener.PlayerListener;
 /**
  * Created by 龙泉 on 2016/12/26.
  */
-public interface PlayerManager {
-
-    void init();
+public interface Player {
 
     void setSurface(Surface surface);
 
@@ -22,4 +20,20 @@ public interface PlayerManager {
     void release();
 
     void setPlayerListener(PlayerListener listener);
+
+    long getDuration();
+
+    float getCurrentPosition();
+
+    long getBufferedPercentage();
+
+    boolean isPlaying();
+
+    void pause();
+
+    void seekTo(long position);
+
+    void resume();
+
+    void stop();
 }

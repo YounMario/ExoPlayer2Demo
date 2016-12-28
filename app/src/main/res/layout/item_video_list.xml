@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="16dp">
+
+
+    <RelativeLayout
+        android:id="@+id/play_view_container"
+        android:layout_width="match_parent"
+        android:layout_height="400dp">
+
+
+        <TextureView
+            android:id="@+id/textureView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/btn_pause"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:srcCompat="@drawable/icon_pause"
+            android:layout_centerInParent="true" />
+
+        <com.example.exoplayersample.video.widget.VideoPlayerBottomBar
+            android:id="@+id/video_play_bottom_bar"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/back_video_player_bottom_bar">
+
+            <TextView
+                android:id="@+id/txt_play_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="16dp"
+                android:textColor="@color/white"
+                android:textSize="12dp" />
+
+            <com.example.exoplayersample.video.widget.VideoProgressBar
+                android:id="@+id/progress_bar"
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_toLeftOf="@+id/txt_end_time"
+                android:layout_toRightOf="@+id/txt_play_time"
+                app:progress_height="2dp"
+                app:thumb_radius="5dp" />
+
+            <TextView
+                android:id="@+id/txt_end_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="16dp"
+                android:textColor="@color/white"
+                android:textSize="12dp" />
+        </com.example.exoplayersample.video.widget.VideoPlayerBottomBar>
+
+
+        <ImageView
+            android:id="@+id/cover_image_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/img_buffering"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/icon_loading"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_below="@+id/play_view_container"
+        android:layout_height="57dp">
+
+        <ImageView
+            android:id="@+id/btn_full"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="#ffffff"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"/>
+
+        <TextView
+            android:id="@+id/txt_desc"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#11ffffff"
+            android:gravity="center_vertical|left"
+            android:maxLength="200"
+            android:paddingBottom="12dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="12dp"
+            android:textColor="#76ffffff" />
+
+    </RelativeLayout>
+
+
+    <FrameLayout
+        android:id="@+id/frame_cover"
+        android:layout_width="match_parent"
+        android:layout_height="457dp"
+        android:background="#CC000000"
+        android:visibility="visible" />
+</RelativeLayout>

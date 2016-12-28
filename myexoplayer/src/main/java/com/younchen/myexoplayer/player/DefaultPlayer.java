@@ -39,7 +39,7 @@ import okhttp3.OkHttpClient;
 /**
  * Created by 龙泉 on 2016/12/26.
  */
-public class DefaultPlayManager implements PlayerManager, ExoPlayer.EventListener {
+public class DefaultPlayer implements Player, ExoPlayer.EventListener {
 
     private SimpleExoPlayer simpleExoPlayer;
     private String mUserAgent;
@@ -49,8 +49,7 @@ public class DefaultPlayManager implements PlayerManager, ExoPlayer.EventListene
     private Surface mSurface;
     private PlayerListener mListener;
 
-    @Override
-    public void init() {
+    public  DefaultPlayer(){
         mainHandler = new Handler();
         simpleExoPlayer = getPlayerInstance();
         mUserAgent = Util.getUserAgent(MyExoPlayerEnv.getContext(), "ExoPlayerDemo");
@@ -82,6 +81,54 @@ public class DefaultPlayManager implements PlayerManager, ExoPlayer.EventListene
     @Override
     public void setPlayerListener(PlayerListener listener) {
         this.mListener = listener;
+    }
+
+    @Override
+    public long getDuration() {
+        return simpleExoPlayer == null || simpleExoPlayer.getDuration() < 0 ? 0 : simpleExoPlayer.getDuration();
+    }
+
+    @Override
+    public float getCurrentPosition() {
+        return simpleExoPlayer.getCurrentPosition();
+    }
+
+    @Override
+    public long getBufferedPercentage() {
+        return simpleExoPlayer.getBufferedPercentage();
+    }
+
+    @Override
+    public boolean isPlaying() {
+        return simpleExoPlayer != null && simpleExoPlayer.getPlayWhenReady();
+    }
+
+    @Override
+    public void pause() {
+        if (simpleExoPlayer != null && simpleExoPlayer.getPlayWhenReady()) {
+            simpleExoPlayer.setPlayWhenReady(false);
+        }
+    }
+
+    @Override
+    public void seekTo(long position) {
+        if (simpleExoPlayer != null) {
+            simpleExoPlayer.seekTo(position);
+        }
+    }
+
+    @Override
+    public void resume() {
+        if (simpleExoPlayer != null) {
+            simpleExoPlayer.setPlayWhenReady(true);
+        }
+    }
+
+    @Override
+    public void stop() {
+        if(simpleExoPlayer != null){
+            simpleExoPlayer.release();
+        }
     }
 
     private void prepare() {

@@ -9,14 +9,14 @@ import android.view.Surface;
 import android.view.TextureView;
 
 import com.younchen.myexoplayer.player.PlayerFactory;
-import com.younchen.myexoplayer.player.PlayerManager;
+import com.younchen.myexoplayer.player.Player;
 import com.younchen.myexoplayer.player.listener.PlayerListener;
 
 
 public class ExoPlayerSample extends AppCompatActivity implements TextureView.SurfaceTextureListener {
 
     private TextureView mTextureView;
-    private PlayerManager mPlayerManager;
+    private Player mPlayer;
 
     private Surface mSurface;
     private static final String TAG = "ExoPlayerSample";
@@ -29,12 +29,11 @@ public class ExoPlayerSample extends AppCompatActivity implements TextureView.Su
         setContentView(R.layout.activity_exo_player_sample);
         mTextureView = (TextureView) findViewById(R.id.textureView);
         mTextureView.setSurfaceTextureListener(this);
-        mPlayerManager = PlayerFactory.newInstance();
+        mPlayer = PlayerFactory.getDefaultPlayer();
 
-        mPlayerManager.init();
         Uri uri = Uri.parse(getVideoPlayPath());
-        mPlayerManager.setPlayUri(uri);
-        mPlayerManager.setPlayerListener(new PlayerListener() {
+        mPlayer.setPlayUri(uri);
+        mPlayer.setPlayerListener(new PlayerListener() {
             @Override
             public void onBuffering() {
                 Log.d(TAG, "onBuffering");
@@ -44,8 +43,8 @@ public class ExoPlayerSample extends AppCompatActivity implements TextureView.Su
             public void onPlayEnd() {
                 Log.d(TAG, "onPlayEnd");
                 Uri uri = Uri.parse(getVideoPlayPath());
-                mPlayerManager.setPlayUri(uri);
-                mPlayerManager.play();
+                mPlayer.setPlayUri(uri);
+                mPlayer.play();
             }
 
             @Override
@@ -56,6 +55,11 @@ public class ExoPlayerSample extends AppCompatActivity implements TextureView.Su
             @Override
             public void onError(Exception error) {
                 Log.d(TAG, "onError:" + error.getMessage());
+            }
+
+            @Override
+            public void onPreparing() {
+
             }
         });
     }
@@ -70,8 +74,8 @@ public class ExoPlayerSample extends AppCompatActivity implements TextureView.Su
             mSurface.release();
         }
         mSurface = new Surface(surfaceTexture);
-        mPlayerManager.setSurface(mSurface);
-        mPlayerManager.play();
+        mPlayer.setSurface(mSurface);
+        mPlayer.play();
     }
 
     @Override
@@ -95,6 +99,6 @@ public class ExoPlayerSample extends AppCompatActivity implements TextureView.Su
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mPlayerManager.release();
+        mPlayer.release();
     }
 }

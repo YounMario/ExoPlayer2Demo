@@ -15,4 +15,6 @@ public interface PlayerListener {
     void onStartPlay();
 
     void onError(Exception error);
+
+    void onPreparing();
 }

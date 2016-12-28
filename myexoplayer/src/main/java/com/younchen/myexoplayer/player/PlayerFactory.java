@@ -5,7 +5,7 @@ package com.younchen.myexoplayer.player;
  */
 public class PlayerFactory {
 
-    public static PlayerManager newInstance() {
-        return new DefaultPlayManager();
+    public static Player getDefaultPlayer() {
+        return new DefaultPlayer();
     }
 }
