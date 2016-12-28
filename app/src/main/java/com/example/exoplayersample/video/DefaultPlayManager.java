@@ -7,9 +7,8 @@ import android.util.Log;
 import android.view.Surface;
 
 import com.example.exoplayersample.App;
-import com.example.exoplayersample.bean.CacheGlue;
-import com.example.exoplayersample.okhttp.CacheHttpClient;
-import com.example.exoplayersample.okhttp.OkHttpDataSourceWrapper;
+import com.example.exoplayersample.okhttp.CacheOkHttpDataSourceFactory;
+import com.example.exoplayersample.util.FileUtils;
 import com.example.exoplayersample.video.listener.PlayerListener;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
@@ -18,7 +17,6 @@ import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.LoadControl;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
-import com.google.android.exoplayer2.ext.okhttp.OkHttpDataSourceFactory;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
@@ -33,6 +31,10 @@ import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+
+import java.io.File;
+
+import okhttp3.OkHttpClient;
 
 /**
  * Created by 龙泉 on 2016/12/26.
@@ -106,9 +108,9 @@ public class DefaultPlayManager implements PlayerManager, ExoPlayer.EventListene
 
     private DataSource.Factory getDataSourceFactory(boolean useOkhttp, Uri uri) {
         if (useOkhttp) {
-            CacheGlue cacheGlue = new CacheGlue(uri);
-            CacheHttpClient cacheHttpClient = new CacheHttpClient(cacheGlue);
-            return new OkHttpDataSourceWrapper(cacheGlue, new OkHttpDataSourceFactory(cacheHttpClient.getInstance(), mUserAgent, new DefaultBandwidthMeter()));
+            String path = FileUtils.convertUrlToLocalPath(uri.getPath());
+            File cacheFile = new File(path);
+            return new CacheOkHttpDataSourceFactory(new OkHttpClient(), mUserAgent, new DefaultBandwidthMeter(), cacheFile);
         } else {
             return new DefaultDataSourceFactory(App.getInstance(), mUserAgent);
         }

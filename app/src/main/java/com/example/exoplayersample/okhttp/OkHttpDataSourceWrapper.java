@@ -3,8 +3,6 @@ package com.example.exoplayersample.okhttp;
 import android.net.Uri;
 
 import com.example.exoplayersample.bean.CacheGlue;
-import com.google.android.exoplayer2.ext.okhttp.OkHttpDataSource;
-import com.google.android.exoplayer2.ext.okhttp.OkHttpDataSourceFactory;
 import com.google.android.exoplayer2.upstream.DataSpec;
 import com.google.android.exoplayer2.upstream.HttpDataSource;
 

@@ -2,18 +2,15 @@ package com.example.exoplayersample;
 
 import android.graphics.SurfaceTexture;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Surface;
 import android.view.TextureView;
 
-import com.example.exoplayersample.util.FileUtils;
 import com.example.exoplayersample.video.PlayerFactory;
 import com.example.exoplayersample.video.PlayerManager;
 import com.example.exoplayersample.video.listener.PlayerListener;
-
-import java.io.File;
 
 public class ExoPlayerSample extends AppCompatActivity implements TextureView.SurfaceTextureListener {
 
@@ -63,13 +60,7 @@ public class ExoPlayerSample extends AppCompatActivity implements TextureView.Su
     }
 
     private String getVideoPlayPath() {
-        String localPath = FileUtils.convertUrlToLocalPath(PLAY_URL2);
-        File file = new File(localPath);
-        if (file.exists()) {
-            return localPath;
-        } else {
-            return PLAY_URL2;
-        }
+        return PLAY_URL2;
     }
 
     @Override

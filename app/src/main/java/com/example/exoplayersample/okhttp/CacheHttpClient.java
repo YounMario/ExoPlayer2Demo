@@ -22,8 +22,10 @@ import okio.Source;
 
 /**
  * Created by 龙泉 on 2016/12/27.
+ * 这个边下载边播放的逻辑， 原理是每次获取的流写入文件，最后将文件合并
+ * ExoPlayer中 已经有CacheDataSource 可以实现这个功能
  */
-
+@Deprecated
 public class CacheHttpClient{
 
     private CacheGlue mGlue;
