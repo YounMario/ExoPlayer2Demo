@@ -1,10 +1,11 @@
-package com.example.exoplayersample.okhttp;
+package com.younchen.myexoplayer.okhttp;
 
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.example.exoplayersample.bean.CacheGlue;
-import com.example.exoplayersample.bean.RangeFile;
+
+import com.younchen.myexoplayer.bean.CacheGlue;
+import com.younchen.myexoplayer.bean.RangeFile;
 
 import java.io.IOException;
 

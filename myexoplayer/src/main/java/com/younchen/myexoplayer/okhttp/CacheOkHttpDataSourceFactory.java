@@ -1,4 +1,4 @@
-package com.example.exoplayersample.okhttp;
+package com.younchen.myexoplayer.okhttp;
 
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.TransferListener;

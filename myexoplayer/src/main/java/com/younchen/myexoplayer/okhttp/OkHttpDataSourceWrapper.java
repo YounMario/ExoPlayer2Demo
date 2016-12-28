@@ -1,10 +1,10 @@
-package com.example.exoplayersample.okhttp;
+package com.younchen.myexoplayer.okhttp;
 
 import android.net.Uri;
 
-import com.example.exoplayersample.bean.CacheGlue;
 import com.google.android.exoplayer2.upstream.DataSpec;
 import com.google.android.exoplayer2.upstream.HttpDataSource;
+import com.younchen.myexoplayer.bean.CacheGlue;
 
 import java.util.List;
 import java.util.Map;

@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ExoPlayerSample.iml" filepath="$PROJECT_DIR$/ExoPlayerSample.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/myexoplayer/myexoplayer.iml" filepath="$PROJECT_DIR$/myexoplayer/myexoplayer.iml" />
     </modules>
   </component>
 </project>

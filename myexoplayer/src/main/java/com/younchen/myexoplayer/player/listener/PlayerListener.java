@@ -1,4 +1,4 @@
-package com.example.exoplayersample.video.listener;
+package com.younchen.myexoplayer.player.listener;
 
 import com.google.android.exoplayer2.ExoPlaybackException;
 

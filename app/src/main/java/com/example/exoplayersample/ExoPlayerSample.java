@@ -8,9 +8,10 @@ import android.util.Log;
 import android.view.Surface;
 import android.view.TextureView;
 
-import com.example.exoplayersample.video.PlayerFactory;
-import com.example.exoplayersample.video.PlayerManager;
-import com.example.exoplayersample.video.listener.PlayerListener;
+import com.younchen.myexoplayer.player.PlayerFactory;
+import com.younchen.myexoplayer.player.PlayerManager;
+import com.younchen.myexoplayer.player.listener.PlayerListener;
+
 
 public class ExoPlayerSample extends AppCompatActivity implements TextureView.SurfaceTextureListener {
 

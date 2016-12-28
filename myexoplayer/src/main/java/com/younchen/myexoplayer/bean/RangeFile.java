@@ -1,6 +1,7 @@
-package com.example.exoplayersample.bean;
+package com.younchen.myexoplayer.bean;
 
-import com.example.exoplayersample.App;
+
+import com.younchen.myexoplayer.MyExoPlayerEnv;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -9,7 +10,7 @@ import okio.BufferedSink;
 import okio.Okio;
 
 public class RangeFile {
-    private static final String sPath = App.getInstance().getFilesDir().getAbsolutePath();
+    private static final String sPath = MyExoPlayerEnv.getContext().getFilesDir().getAbsolutePath();
 
     public BufferedSink fileSink;
     public File file;

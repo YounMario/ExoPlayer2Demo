@@ -1,11 +1,11 @@
-package com.example.exoplayersample.util;
+package com.younchen.myexoplayer.util;
 
 import android.content.Context;
 import android.os.Environment;
 import android.text.TextUtils;
 
 
-import com.example.exoplayersample.App;
+import com.younchen.myexoplayer.MyExoPlayerEnv;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -80,7 +80,7 @@ public class FileUtils {
         }
 
         String fileName = url.substring(url.lastIndexOf('/') + 1, url.length());
-        File file = new File(App.getInstance().getFilesDir(), fileName);
+        File file = new File(MyExoPlayerEnv.getContext().getFilesDir(), fileName);
         return file.getAbsolutePath();
     }
 
@@ -96,7 +96,7 @@ public class FileUtils {
     }
 
     private static void removeFiles(String md5) {
-        File file = new File(App.getInstance().getFilesDir().getAbsolutePath());
+        File file = new File(MyExoPlayerEnv.getContext().getFilesDir().getAbsolutePath());
         File[] files = null;
         if (file.isDirectory()) {
             files = file.listFiles();

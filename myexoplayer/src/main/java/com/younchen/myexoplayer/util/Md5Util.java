@@ -1,4 +1,4 @@
-package com.example.exoplayersample.util;
+package com.younchen.myexoplayer.util;
 
 import android.text.TextUtils;
 

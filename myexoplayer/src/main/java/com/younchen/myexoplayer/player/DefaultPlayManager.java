@@ -1,4 +1,4 @@
-package com.example.exoplayersample.video;
+package com.younchen.myexoplayer.player;
 
 import android.net.Uri;
 import android.os.Handler;
@@ -6,10 +6,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.Surface;
 
-import com.example.exoplayersample.App;
-import com.example.exoplayersample.okhttp.CacheOkHttpDataSourceFactory;
-import com.example.exoplayersample.util.FileUtils;
-import com.example.exoplayersample.video.listener.PlayerListener;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
@@ -31,6 +27,10 @@ import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.younchen.myexoplayer.MyExoPlayerEnv;
+import com.younchen.myexoplayer.okhttp.CacheOkHttpDataSourceFactory;
+import com.younchen.myexoplayer.player.listener.PlayerListener;
+import com.younchen.myexoplayer.util.FileUtils;
 
 import java.io.File;
 
@@ -53,7 +53,7 @@ public class DefaultPlayManager implements PlayerManager, ExoPlayer.EventListene
     public void init() {
         mainHandler = new Handler();
         simpleExoPlayer = getPlayerInstance();
-        mUserAgent = Util.getUserAgent(App.getInstance(), "ExoPlayerDemo");
+        mUserAgent = Util.getUserAgent(MyExoPlayerEnv.getContext(), "ExoPlayerDemo");
     }
 
     @Override
@@ -112,7 +112,7 @@ public class DefaultPlayManager implements PlayerManager, ExoPlayer.EventListene
             File cacheFile = new File(path);
             return new CacheOkHttpDataSourceFactory(new OkHttpClient(), mUserAgent, new DefaultBandwidthMeter(), cacheFile);
         } else {
-            return new DefaultDataSourceFactory(App.getInstance(), mUserAgent);
+            return new DefaultDataSourceFactory(MyExoPlayerEnv.getContext(), mUserAgent);
         }
     }
 
@@ -126,7 +126,7 @@ public class DefaultPlayManager implements PlayerManager, ExoPlayer.EventListene
 
         LoadControl loadControl = new DefaultLoadControl();
 
-        return ExoPlayerFactory.newSimpleInstance(App.getInstance(), trackSelector, loadControl);
+        return ExoPlayerFactory.newSimpleInstance(MyExoPlayerEnv.getContext(), trackSelector, loadControl);
     }
 
 

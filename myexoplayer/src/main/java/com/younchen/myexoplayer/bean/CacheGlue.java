@@ -1,10 +1,10 @@
-package com.example.exoplayersample.bean;
+package com.younchen.myexoplayer.bean;
 
 import android.net.Uri;
 import android.util.Log;
 
-import com.example.exoplayersample.App;
-import com.example.exoplayersample.util.FileUtils;
+import com.younchen.myexoplayer.MyExoPlayerEnv;
+import com.younchen.myexoplayer.util.FileUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -19,7 +19,7 @@ import okio.BufferedSource;
 import okio.Okio;
 
 public class CacheGlue {
-    private static final String sPath = App.getInstance().getFilesDir().getAbsolutePath();
+    private static final String sPath = MyExoPlayerEnv.getContext().getFilesDir().getAbsolutePath();
     private static final String TAG = "CacheGlue";
     private Uri uri;
     private List<RangeFile> rangeFiles;
