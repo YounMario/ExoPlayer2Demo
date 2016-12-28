@@ -2,8 +2,6 @@ package com.example.exoplayersample.video.player;
 
 import android.graphics.Matrix;
 import android.net.Uri;
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 import android.view.Surface;
 import android.view.TextureView;
@@ -12,22 +10,19 @@ import com.younchen.myexoplayer.player.Player;
 import com.younchen.myexoplayer.player.PlayerFactory;
 import com.younchen.myexoplayer.player.listener.PlayerListener;
 
-import java.lang.ref.WeakReference;
-
 /**
  * Created by 龙泉 on 2016/10/19.
  */
 
-public class ExoVideoPlayManager {
+public class ExoPlayerWrapper {
 
     private static final String TAG_PLAY_STATE = "ExoPlayState";
     private Player mExoPlayer;
     private PlayableWindow currentWindow;
 
-    //private VideoPlayListener videoPlayListener;
 
 
-    public ExoVideoPlayManager() {
+    public ExoPlayerWrapper() {
         mExoPlayer = PlayerFactory.getDefaultPlayer();
         mExoPlayer.setPlayerListener(new PlayerListener() {
             @Override
@@ -73,37 +68,13 @@ public class ExoVideoPlayManager {
     }
 
 
-    private static class InnerHandler extends Handler {
-        private WeakReference<ExoVideoPlayManager> mExoVideoPlayManagerRef;
-
-        public InnerHandler(ExoVideoPlayManager playManager) {
-            mExoVideoPlayManagerRef = new WeakReference<>(playManager);
-        }
-
-
-        public void handleMessage(Message msg) {
-            if (msg == null) {
-                return;
-            }
-
-            final ExoVideoPlayManager exoVideoPlayManager = mExoVideoPlayManagerRef.get();
-            if (exoVideoPlayManager == null) {
-                return;
-            }
-
-            exoVideoPlayManager.handleMessage(msg);
-        }
-    }
-
-    private void handleMessage(Message msg) {
-
-    }
-
-
     public void play() {
         mExoPlayer.play();
     }
 
+    public Player getPlayer(){
+        return mExoPlayer;
+    }
 
 
     public void stopPlay() {

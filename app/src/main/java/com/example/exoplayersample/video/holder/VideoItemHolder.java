@@ -15,7 +15,7 @@ import com.example.exoplayersample.App;
 import com.example.exoplayersample.R;
 import com.example.exoplayersample.video.anim.AnimationUtils;
 import com.example.exoplayersample.video.bean.VideoInfo;
-import com.example.exoplayersample.video.player.ExoVideoPlayManager;
+import com.example.exoplayersample.video.player.ExoPlayerWrapper;
 import com.example.exoplayersample.video.player.PlayableWindow;
 import com.example.exoplayersample.video.player.manager.VideoPlayManager;
 import com.example.exoplayersample.video.utils.ThreadUtils;
@@ -55,7 +55,7 @@ public class VideoItemHolder extends RecyclerView.ViewHolder implements Playable
     private ObjectAnimator playButtonAnimation;
     private Runnable mDelayHideRunnable;
 
-    private ExoVideoPlayManager mExoPlayerManager;
+    private ExoPlayerWrapper mExoPlayerManager;
     private VideoInfo mVideoItem;
     private boolean mPlayActive;
     private VideoPlayManager mVideoPlayManager;
@@ -75,8 +75,9 @@ public class VideoItemHolder extends RecyclerView.ViewHolder implements Playable
         ivLoading = (ImageView) itemView.findViewById(R.id.img_buffering);
         mTxtDescription = (TextView) itemView.findViewById(R.id.txt_desc);
         btnFullScreen = (ImageView) itemView.findViewById(R.id.btn_full);
-        mExoPlayerManager = new ExoVideoPlayManager();
+        mExoPlayerManager = new ExoPlayerWrapper();
         mExoPlayerManager.setPlayableWindow(this);
+        videoPlayerBottomBar.setupPlayer(mExoPlayerManager.getPlayer());
 
         btnFullScreen.setOnClickListener(new View.OnClickListener() {
             @Override
