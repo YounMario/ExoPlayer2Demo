@@ -48,11 +48,10 @@ public class MainActivity extends AppCompatActivity {
         //
         mVideoPlayManager = new DefaultVideoPlayManager();
 
-        mAdapter = new VideoListAdapter(mRecyclerView);
+        mAdapter = new VideoListAdapter();
         ((SimpleItemAnimator) mRecyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setData(videoInfos);
-        mAdapter.setLinearLayout(mLinearLayoutManager);
         mAdapter.setVideoPlayManager(mVideoPlayManager);
         mScrollerListener = new PlayWindowScrollerListener(mVideoPlayManager);
         mRecyclerView.addOnScrollListener(mScrollerListener);

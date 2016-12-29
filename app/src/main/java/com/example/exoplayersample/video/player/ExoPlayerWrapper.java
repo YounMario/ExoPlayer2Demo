@@ -1,10 +1,8 @@
 package com.example.exoplayersample.video.player;
 
-import android.graphics.Matrix;
 import android.net.Uri;
 import android.util.Log;
 import android.view.Surface;
-import android.view.TextureView;
 
 import com.younchen.myexoplayer.player.Player;
 import com.younchen.myexoplayer.player.PlayerFactory;
@@ -82,12 +80,6 @@ public class ExoPlayerWrapper {
         mExoPlayer.stop();
         if (currentWindow != null) {
             currentWindow.updateUiToNormalState();
-            if (currentWindow.getPlayerView() != null) {
-//                VideoPlayerBottomBar bottomBar = (VideoPlayerBottomBar) currentWindow.getPlayerView().findViewById(R.id.video_play_bottom_bar);
-//                if (bottomBar != null) {
-//                    bottomBar.release();
-//                }
-            }
         }
     }
 
@@ -138,29 +130,6 @@ public class ExoPlayerWrapper {
         return mExoPlayer.isPlaying();
     }
 
-    public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
-        if (currentWindow == null) {
-            return;
-        }
-        TextureView textureView = (TextureView) currentWindow.getVideoView();
-
-        if (textureView == null) return;
-        int viewWidth = textureView.getWidth();
-        int viewHeight = textureView.getHeight();
-        float scaledX = 1.f * width / viewWidth;
-        float scaledY = 1.f * height / viewHeight;
-        float scale = Math.max(1 / scaledX, 1 / scaledY);
-
-        // Calculate pivot points, in our case crop from center
-        int pivotPointX = viewWidth / 2;
-        int pivotPointY = viewHeight / 2;
-
-        Matrix matrix = new Matrix();
-        matrix.setScale(scaledX * scale, scaledY * scale, pivotPointX, pivotPointY);
-        textureView.setTransform(matrix);
-    }
-
-
 
     public void release() {
         if (mExoPlayer != null) {
@@ -169,12 +138,10 @@ public class ExoPlayerWrapper {
         }
     }
 
-
     public void setSurface(Surface surface) {
         if (mExoPlayer != null) {
             mExoPlayer.setSurface(surface);
         }
     }
-
 
 }

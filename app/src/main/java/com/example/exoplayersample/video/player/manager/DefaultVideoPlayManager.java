@@ -1,13 +1,9 @@
 package com.example.exoplayersample.video.player.manager;
 
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.example.exoplayersample.video.bean.VideoInfo;
 import com.example.exoplayersample.video.player.PlayableWindow;
-import com.younchen.myexoplayer.util.FileUtils;
-
-import java.io.File;
 
 /**
  * Created by 龙泉 on 2016/12/23.

@@ -23,22 +23,11 @@ import java.util.List;
 public class VideoListAdapter extends RecyclerView.Adapter {
 
 
-    private static final String TAG = "VideoListAdapter";
-
     private static final String TAG_ITEM_STATE = "video_item_state";
-    private static final String TAG_SAVE_CURRENT = "save_current_seek";
-    private int currentState;
-
-    private PlayableWindow currentWindow;
-    private RecyclerView mRecycleView;
 
 
     private List<VideoInfo> data;
 
-    private LinearLayoutManager mLinearLayoutManager;
-
-    private static final int STATE_INIT = -1;
-    private static final int STATE_INITED = 0;
 
     private VideoPlayManager mVideoPlayManager;
 
@@ -54,18 +43,9 @@ public class VideoListAdapter extends RecyclerView.Adapter {
     }
 
 
-    public void setLinearLayout(LinearLayoutManager linearLayoutManager) {
-        this.mLinearLayoutManager = linearLayoutManager;
-    }
-
-
-    public VideoListAdapter(RecyclerView recyclerView) {
-        mRecycleView = recyclerView;
-        setCurrentState(STATE_INIT);
-
+    public VideoListAdapter() {
         data = new ArrayList<>();
     }
-
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -92,12 +72,7 @@ public class VideoListAdapter extends RecyclerView.Adapter {
     }
 
 
-    private void setCurrentState(int currentState) {
-        Log.i("aStateChanged", " currentState:" + currentState);
-        this.currentState = currentState;
-    }
-
-    public void setVideoPlayManager(VideoPlayManager videoPlayManager){
+    public void setVideoPlayManager(VideoPlayManager videoPlayManager) {
         this.mVideoPlayManager = videoPlayManager;
     }
 

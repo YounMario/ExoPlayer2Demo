@@ -78,6 +78,7 @@ public class VideoItemHolder extends RecyclerView.ViewHolder implements Playable
         mExoPlayerManager = new ExoPlayerWrapper();
         mExoPlayerManager.setPlayableWindow(this);
         videoPlayerBottomBar.setupPlayer(mExoPlayerManager.getPlayer());
+        videoPlayerBottomBar.setBufferBarVisible(true);
 
         btnFullScreen.setOnClickListener(new View.OnClickListener() {
             @Override
