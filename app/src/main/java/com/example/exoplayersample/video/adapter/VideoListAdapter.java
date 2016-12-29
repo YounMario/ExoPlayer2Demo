@@ -1,6 +1,5 @@
 package com.example.exoplayersample.video.adapter;
 
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,7 +9,6 @@ import android.view.ViewGroup;
 import com.example.exoplayersample.R;
 import com.example.exoplayersample.video.bean.VideoInfo;
 import com.example.exoplayersample.video.holder.VideoItemHolder;
-import com.example.exoplayersample.video.player.PlayableWindow;
 import com.example.exoplayersample.video.player.manager.VideoPlayManager;
 
 import java.util.ArrayList;

@@ -43,19 +43,20 @@ public class VideoItemHolder extends RecyclerView.ViewHolder implements Playable
     private VideoPlayerBottomBar videoPlayerBottomBar;
     private FrameLayout frameCover;
     private TextView mTxtDescription;
+    private ImageView mFullScreenBtn;
 
-    private ImageView btnFullScreen;
 
     private float mLastVisibleArea;
     private int mCurrentIndex;
     private long mCurrentPlaySeek;
+
 
     private ObjectAnimator roatingAnimation;
     private ObjectAnimator videoBottomBarAnimation;
     private ObjectAnimator playButtonAnimation;
     private Runnable mDelayHideRunnable;
 
-    private ExoPlayerWrapper mExoPlayerManager;
+    private ExoPlayerWrapper mExoPlayerWrapper;
     private VideoInfo mVideoItem;
     private boolean mPlayActive;
     private VideoPlayManager mVideoPlayManager;
@@ -74,18 +75,13 @@ public class VideoItemHolder extends RecyclerView.ViewHolder implements Playable
         frameCover = (FrameLayout) itemView.findViewById(R.id.frame_cover);
         ivLoading = (ImageView) itemView.findViewById(R.id.img_buffering);
         mTxtDescription = (TextView) itemView.findViewById(R.id.txt_desc);
-        btnFullScreen = (ImageView) itemView.findViewById(R.id.btn_full);
-        mExoPlayerManager = new ExoPlayerWrapper();
-        mExoPlayerManager.setPlayableWindow(this);
-        videoPlayerBottomBar.setupPlayer(mExoPlayerManager.getPlayer());
+        mExoPlayerWrapper = new ExoPlayerWrapper();
+        mExoPlayerWrapper.setPlayableWindow(this);
+
+
+        videoPlayerBottomBar.setupPlayer(mExoPlayerWrapper.getPlayer());
         videoPlayerBottomBar.setBufferBarVisible(true);
 
-        btnFullScreen.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
 
         textureView.setSurfaceTextureListener(new TextureView.SurfaceTextureListener() {
             @Override
@@ -116,7 +112,6 @@ public class VideoItemHolder extends RecyclerView.ViewHolder implements Playable
                 PlayableWindow currentWindow = mVideoPlayManager.getCurrentPlayableWindow();
                 if (currentWindow == VideoItemHolder.this) {
                     Log.i(TAG, "is surface texture disdroyed:" + currentWindow.getWindowIndex() + " view:" + textureView);
-                    Log.i("locker_news_videoplay", "on pause.......");
                     if (currentWindow.isPlaying()) {
                         mVideoPlayManager.stopPlay();
                     }
@@ -301,7 +296,7 @@ public class VideoItemHolder extends RecyclerView.ViewHolder implements Playable
 
     @Override
     public long getCurrentSeek() {
-        return mExoPlayerManager.getCurrentSeek();
+        return mExoPlayerWrapper.getCurrentSeek();
     }
 
 
@@ -325,49 +320,49 @@ public class VideoItemHolder extends RecyclerView.ViewHolder implements Playable
     }
 
     private void releasePlayer() {
-        if (mExoPlayerManager != null) {
-            mExoPlayerManager.release();
+        if (mExoPlayerWrapper != null) {
+            mExoPlayerWrapper.release();
         }
     }
 
     @Override
     public void stopPlay() {
-        mExoPlayerManager.stopPlay();
+        mExoPlayerWrapper.stopPlay();
     }
 
     @Override
     public boolean isPlaying() {
-        return mExoPlayerManager.isPlaying();
+        return mExoPlayerWrapper.isPlaying();
     }
 
     @Override
     public void setUrl(String url) {
-        mExoPlayerManager.setUrl(url);
+        mExoPlayerWrapper.setUrl(url);
     }
 
     @Override
     public void play() {
-        mExoPlayerManager.play();
+        mExoPlayerWrapper.play();
     }
 
     @Override
     public void pause() {
-        mExoPlayerManager.pause();
+        mExoPlayerWrapper.pause();
     }
 
     @Override
     public void resume() {
-        mExoPlayerManager.resume();
+        mExoPlayerWrapper.resume();
     }
 
     @Override
     public void onFocus() {
-        mExoPlayerManager.onFocus();
+        mExoPlayerWrapper.onFocus();
     }
 
     @Override
     public void setSurface(Surface mSurface) {
-        mExoPlayerManager.setSurface(mSurface);
+        mExoPlayerWrapper.setSurface(mSurface);
     }
 
     @Override

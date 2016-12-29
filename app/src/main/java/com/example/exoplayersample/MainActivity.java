@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
             VideoInfo info = new VideoInfo();
             info.setDesc("des");
             //http://clips.vorwaerts-gmbh.de/VfE_html5.mp4
-            info.setVideoUrl("http://img.locker.cmcm.com/livelock/uservideo/90f1353176bc83dffe2f246eba496c7a");
+            info.setVideoUrl("http://2449.vod.myqcloud.com/2449_22ca37a6ea9011e5acaaf51d105342e3.f20.mp4");
             info.setThumbnailUrl("http://img2.imgtn.bdimg.com/it/u=11396313,1297606499&fm=21&gp=0.jpg");
             videoInfos.add(info);
         }

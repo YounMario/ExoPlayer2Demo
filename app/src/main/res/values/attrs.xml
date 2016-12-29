@@ -4,4 +4,12 @@
         <attr name="progress_height" format="dimension" />
         <attr name="thumb_radius" format="dimension" />
     </declare-styleable>
+
+
+    <declare-styleable name="VideoPlayerBottomBar">
+        <attr name="change_window_mode">
+            <enum name="full_screen" value="0" />
+            <enum name="normal_screen" value="1" />
+        </attr>
+    </declare-styleable>
 </resources>

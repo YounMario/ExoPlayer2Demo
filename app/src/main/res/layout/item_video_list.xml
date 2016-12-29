@@ -25,45 +25,14 @@
             app:srcCompat="@drawable/icon_pause"
             android:layout_centerInParent="true" />
 
+
         <com.example.exoplayersample.video.widget.VideoPlayerBottomBar
             android:id="@+id/video_play_bottom_bar"
             android:layout_width="match_parent"
             android:layout_height="36dp"
             android:layout_alignParentBottom="true"
-            android:background="@drawable/back_video_player_bottom_bar">
-
-            <TextView
-                android:id="@+id/txt_play_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="16dp"
-                android:textColor="@color/white"
-                android:textSize="12dp" />
-
-            <com.example.exoplayersample.video.widget.VideoProgressBar
-                android:id="@+id/progress_bar"
-                android:layout_width="match_parent"
-                android:layout_height="25dp"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_toLeftOf="@+id/txt_end_time"
-                android:layout_toRightOf="@+id/txt_play_time"
-                app:progress_height="2dp"
-                app:thumb_radius="5dp" />
-
-            <TextView
-                android:id="@+id/txt_end_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="16dp"
-                android:textColor="@color/white"
-                android:textSize="12dp" />
-        </com.example.exoplayersample.video.widget.VideoPlayerBottomBar>
+            android:background="@drawable/back_video_player_bottom_bar"
+             />
 
 
         <ImageView
@@ -86,15 +55,6 @@
         android:layout_width="match_parent"
         android:layout_below="@+id/play_view_container"
         android:layout_height="57dp">
-
-        <ImageView
-            android:id="@+id/btn_full"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="#ffffff"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"/>
-
         <TextView
             android:id="@+id/txt_desc"
             android:layout_width="match_parent"

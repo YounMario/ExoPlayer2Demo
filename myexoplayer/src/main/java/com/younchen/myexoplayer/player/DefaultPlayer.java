@@ -58,6 +58,9 @@ public class DefaultPlayer implements Player, ExoPlayer.EventListener {
     @Override
     public void setSurface(Surface surface) {
         this.mSurface = surface;
+        if (simpleExoPlayer != null) {
+            simpleExoPlayer.setVideoSurface(mSurface);
+        }
     }
 
     @Override
