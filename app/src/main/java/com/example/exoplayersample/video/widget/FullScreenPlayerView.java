@@ -1,28 +1,26 @@
 package com.example.exoplayersample.video.widget;
 
 import android.content.Context;
-import android.graphics.SurfaceTexture;
 import android.util.AttributeSet;
-import android.view.Surface;
-import android.view.TextureView;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
 import com.example.exoplayersample.R;
-import com.younchen.myexoplayer.player.Player;
+import com.example.exoplayersample.video.player.presenter.PlayerPresenter;
 
 /**
  * Created by 龙泉 on 2016/12/29.
  */
 
-public class FullScreenPlayerView extends RelativeLayout implements TextureView.SurfaceTextureListener ,View.OnClickListener{
+public class FullScreenPlayerView extends RelativeLayout {
 
     private View mRootView;
-    private TextureView mTextureView;
-    private Surface mSurface;
 
-    private Player mPlayer;
+    private PlayerPresenter mPlayer;
     private VideoPlayerBottomBar mVideoPlayBottomBar;
+    private FrameLayout mFrameLayout;
 
     public FullScreenPlayerView(Context context) {
         this(context, null);
@@ -39,53 +37,22 @@ public class FullScreenPlayerView extends RelativeLayout implements TextureView.
 
     private void init() {
         mRootView = inflate(getContext(), R.layout.layout_full_screen_player, this);
-        mTextureView = (TextureView) mRootView.findViewById(R.id.texture_view);
         mVideoPlayBottomBar = (VideoPlayerBottomBar) mRootView.findViewById(R.id.video_play_bottom_bar);
-        mTextureView.setSurfaceTextureListener(this);
-        setOnClickListener(this);
+        mFrameLayout = (FrameLayout) mRootView.findViewById(R.id.play_view_container);
     }
 
-    public void setPlayer(Player player) {
+    public void setPlayerPresenter(PlayerPresenter player) {
         this.mPlayer = player;
         if (mPlayer != null) {
-            mVideoPlayBottomBar.setupPlayer(mPlayer);
+            mVideoPlayBottomBar.setupPlayerPresenter(mPlayer);
         }
-    }
-
-    @Override
-    protected void onFinishInflate() {
-        super.onFinishInflate();
-    }
-
-    @Override
-    public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
-        if (mSurface != null) {
-            mSurface.release();
+        View playerView = player.getPlayerView().getVideoView();
+        ViewGroup oldParent = (ViewGroup) playerView.getParent();
+        if (oldParent != null) {
+            oldParent.removeView(playerView);
         }
-        mSurface = new Surface(surface);
-        mPlayer.setSurface(mSurface);
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        mFrameLayout.addView(playerView, params);
     }
 
-    @Override
-    public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
-
-    }
-
-    @Override
-    public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
-        if (mSurface != null) {
-            mSurface.release();
-        }
-        return true;
-    }
-
-    @Override
-    public void onSurfaceTextureUpdated(SurfaceTexture surface) {
-
-    }
-
-    @Override
-    public void onClick(View view) {
-
-    }
 }

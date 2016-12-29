@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.exoplayersample.R;
+import com.example.exoplayersample.video.player.presenter.PlayerPresenter;
 import com.example.exoplayersample.video.utils.ContextUtil;
 import com.younchen.myexoplayer.player.Player;
 
@@ -27,7 +28,7 @@ public class VideoPlayerBottomBar extends RelativeLayout implements View.OnClick
     private TextView mStartTime;
     private TextView mEndTime;
 
-    private WeakReference<Player> mPlayerReference;
+    private WeakReference<PlayerPresenter> mPlayerReference;
     private ImageView mBtnFullScreen;
     private int mScreenMode;
 
@@ -54,9 +55,10 @@ public class VideoPlayerBottomBar extends RelativeLayout implements View.OnClick
     }
 
 
-    public void setupPlayer(Player player) {
-        mPlayerReference = new WeakReference<>(player);
-        mVideoProgressBar.setController(mPlayerReference);
+    public void setupPlayerPresenter(PlayerPresenter playerPresenter) {
+        mPlayerReference = new WeakReference<>(playerPresenter);
+        final Player player = mPlayerReference.get().getPlayer();
+        mVideoProgressBar.setController(player);
         mVideoProgressBar.setSeekListener(new VideoProgressBar.SeekListener() {
             @Override
             public void onSeek(int progress) {
@@ -92,7 +94,7 @@ public class VideoPlayerBottomBar extends RelativeLayout implements View.OnClick
 
     private void seekTo(int progress){
         if (mPlayerReference != null && mPlayerReference.get() != null) {
-            final Player player = mPlayerReference.get();
+            final Player player = mPlayerReference.get().getPlayer();
             long duringTime = player.getDuration();
             long position = (long) ((duringTime * progress * 1.0) / 100);
             player.seekTo(position);
@@ -102,8 +104,9 @@ public class VideoPlayerBottomBar extends RelativeLayout implements View.OnClick
 
     private void updateTextView() {
         if (mPlayerReference != null && mPlayerReference.get() != null) {
-            long duringTime = mPlayerReference.get().getDuration();
-            long currentPos = (long) mPlayerReference.get().getCurrentPosition();
+            Player player = mPlayerReference.get().getPlayer();
+            long duringTime = player.getDuration();
+            long currentPos = (long) player.getCurrentPosition();
             mEndTime.setText(timeToString(duringTime));
             mStartTime.setText(timeToString(currentPos));
         }
@@ -165,9 +168,14 @@ public class VideoPlayerBottomBar extends RelativeLayout implements View.OnClick
         //3. add full screen view to root window
         FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        Player player = mPlayerReference.get();
-        player.pause();
-        fullScreenPlayerView.setPlayer(player);
+
+
+        PlayerPresenter playerPresenter = mPlayerReference.get();
+        Player player = playerPresenter.getPlayer();
+
+        playerPresenter.saveCurrentPlayerParent();
+
+        fullScreenPlayerView.setPlayerPresenter(playerPresenter);
         rootView.addView(fullScreenPlayerView, lp);
     }
 

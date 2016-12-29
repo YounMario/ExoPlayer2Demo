@@ -4,13 +4,14 @@ import android.view.Surface;
 import android.view.View;
 
 import com.example.exoplayersample.video.player.manager.VideoPlayManager;
+import com.example.exoplayersample.video.player.presenter.IPlayerView;
 
 
 /**
  * Created by 龙泉 on 2016/10/19.
  */
 
-public interface PlayableWindow<T> {
+public interface PlayableWindow<T> extends IPlayerView{
 
     boolean canPlay();
 

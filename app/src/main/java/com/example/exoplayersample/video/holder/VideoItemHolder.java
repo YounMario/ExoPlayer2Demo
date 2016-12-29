@@ -18,6 +18,8 @@ import com.example.exoplayersample.video.bean.VideoInfo;
 import com.example.exoplayersample.video.player.ExoPlayerWrapper;
 import com.example.exoplayersample.video.player.PlayableWindow;
 import com.example.exoplayersample.video.player.manager.VideoPlayManager;
+import com.example.exoplayersample.video.player.presenter.DefalutPlayerPresenter;
+import com.example.exoplayersample.video.player.presenter.PlayerPresenter;
 import com.example.exoplayersample.video.utils.ThreadUtils;
 import com.example.exoplayersample.video.utils.ViewUtils;
 import com.example.exoplayersample.video.widget.VideoPlayerBottomBar;
@@ -61,6 +63,9 @@ public class VideoItemHolder extends RecyclerView.ViewHolder implements Playable
     private boolean mPlayActive;
     private VideoPlayManager mVideoPlayManager;
 
+
+    private PlayerPresenter mVideoPlayerPresenter;
+
     public VideoItemHolder(View itemView) {
         super(itemView);
         mItemView = itemView;
@@ -77,9 +82,10 @@ public class VideoItemHolder extends RecyclerView.ViewHolder implements Playable
         mTxtDescription = (TextView) itemView.findViewById(R.id.txt_desc);
         mExoPlayerWrapper = new ExoPlayerWrapper();
         mExoPlayerWrapper.setPlayableWindow(this);
+        mVideoPlayerPresenter = new DefalutPlayerPresenter(mExoPlayerWrapper.getPlayer(),this);
 
 
-        videoPlayerBottomBar.setupPlayer(mExoPlayerWrapper.getPlayer());
+        videoPlayerBottomBar.setupPlayerPresenter(mVideoPlayerPresenter);
         videoPlayerBottomBar.setBufferBarVisible(true);
 
 
@@ -91,8 +97,9 @@ public class VideoItemHolder extends RecyclerView.ViewHolder implements Playable
                 }
                 mSurface = new Surface(surface);
                 VideoItemHolder.this.setSurface(mSurface);
-                if (mVideoPlayManager.getCurrentPlayableWindow() == VideoItemHolder.this) {
-                    if (mVideoPlayManager.getCurrentPlayableWindow().playActive()) {
+                PlayableWindow current = mVideoPlayManager.getCurrentPlayableWindow();
+                if (current == VideoItemHolder.this) {
+                    if(!current.isPlaying()){
                         mVideoPlayManager.play();
                     }
                 }
@@ -112,9 +119,9 @@ public class VideoItemHolder extends RecyclerView.ViewHolder implements Playable
                 PlayableWindow currentWindow = mVideoPlayManager.getCurrentPlayableWindow();
                 if (currentWindow == VideoItemHolder.this) {
                     Log.i(TAG, "is surface texture disdroyed:" + currentWindow.getWindowIndex() + " view:" + textureView);
-                    if (currentWindow.isPlaying()) {
-                        mVideoPlayManager.stopPlay();
-                    }
+//                    if (currentWindow.isPlaying()) {
+//                        mVideoPlayManager.stopPlay();
+//                    }
                 }
                 return true;
             }

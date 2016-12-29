@@ -28,7 +28,7 @@ public class VideoProgressBar extends View {
     private Paint mThumbPaint;
     private Paint mBufferPaint;
 
-    private WeakReference<Player> weakReference;
+    private Player mPlayer;
 
 
     private ProgressListener mProgressListener;
@@ -179,28 +179,27 @@ public class VideoProgressBar extends View {
 
 
     private int getPlayProgress() {
-        if (weakReference == null || weakReference.get() == null) return 0;
-        long duration = weakReference.get().getDuration();
+        if (mPlayer == null) return 0;
+        long duration = mPlayer.getDuration();
         if (duration == 0) return 0;
-        return (int) (100.f * weakReference.get().getCurrentPosition() / duration);
+        return (int) (100.f * mPlayer.getCurrentPosition() / duration);
     }
 
     private int getBufferProgress() {
-        if (weakReference == null || weakReference.get() == null) return 0;
-        final Player player = weakReference.get();
-        long percentage = player.getBufferedPercentage();
+        if (mPlayer == null) return 0;
+        long percentage = mPlayer.getBufferedPercentage();
         return (int) percentage;
     }
 
-    public void setController(WeakReference<Player> playerControlReference) {
-        weakReference = playerControlReference;
+    public void setController(Player player) {
+        mPlayer = player;
         ViewCompat.postInvalidateOnAnimation(this);
     }
 
     public void releseController() {
-        if (weakReference != null && weakReference.get() != null) {
-            weakReference.clear();
-        }
+//        if (weakReference != null && weakReference.get() != null) {
+//            weakReference.clear();
+//        }
     }
 
     public void setSeekListener(SeekListener seekListener){

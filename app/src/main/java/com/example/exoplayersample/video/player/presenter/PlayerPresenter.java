@@ -1,6 +1,7 @@
 package com.example.exoplayersample.video.player.presenter;
 
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.younchen.myexoplayer.player.Player;
 
@@ -12,13 +13,13 @@ public interface PlayerPresenter {
 
     void setPlayer(Player player);
 
-    void setPlayerView(View view);
+    void setPlayerView(IPlayerView view);
 
-    View getPlayerView();
+    IPlayerView getPlayerView();
 
     Player getPlayer();
 
-    void saveParentView(View parent);
+    void saveCurrentPlayerParent();
 
     void restoreLastParentView();
 
