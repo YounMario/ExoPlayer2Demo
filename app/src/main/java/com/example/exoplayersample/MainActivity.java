@@ -7,11 +7,11 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
 
 
-import com.example.exoplayersample.video.adapter.VideoListAdapter;
-import com.example.exoplayersample.video.bean.VideoInfo;
-import com.example.exoplayersample.video.listener.PlayWindowScrollerListener;
-import com.example.exoplayersample.video.player.manager.DefaultVideoPlayManager;
-import com.example.exoplayersample.video.player.manager.VideoPlayManager;
+import com.example.exoplayersample.video.listdemo.adapter.VideoListAdapter;
+import com.example.exoplayersample.video.listdemo.bean.VideoInfo;
+import com.example.exoplayersample.video.listdemo.listener.PlayWindowScrollerListener;
+import com.example.exoplayersample.video.listdemo.manager.DefaultVideoPlayManager;
+import com.example.exoplayersample.video.listdemo.manager.VideoPlayManager;
 
 import java.util.ArrayList;
 

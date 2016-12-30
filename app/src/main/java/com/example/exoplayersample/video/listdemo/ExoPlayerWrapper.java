@@ -1,9 +1,10 @@
-package com.example.exoplayersample.video.player;
+package com.example.exoplayersample.video.listdemo;
 
 import android.net.Uri;
 import android.util.Log;
 import android.view.Surface;
 
+import com.example.exoplayersample.video.listdemo.PlayableWindow;
 import com.younchen.myexoplayer.player.Player;
 import com.younchen.myexoplayer.player.PlayerFactory;
 import com.younchen.myexoplayer.player.listener.PlayerListener;

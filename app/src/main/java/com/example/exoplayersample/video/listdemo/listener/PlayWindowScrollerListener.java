@@ -1,11 +1,11 @@
-package com.example.exoplayersample.video.listener;
+package com.example.exoplayersample.video.listdemo.listener;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 
-import com.example.exoplayersample.video.player.PlayableWindow;
-import com.example.exoplayersample.video.player.manager.VideoPlayManager;
+import com.example.exoplayersample.video.listdemo.PlayableWindow;
+import com.example.exoplayersample.video.listdemo.manager.VideoPlayManager;
 
 import java.util.ArrayList;
 

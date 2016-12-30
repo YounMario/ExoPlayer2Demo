@@ -1,4 +1,4 @@
-package com.example.exoplayersample.video.anim;
+package com.example.exoplayersample.video.listdemo.anim;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;

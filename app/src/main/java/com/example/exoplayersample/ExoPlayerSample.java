@@ -21,7 +21,7 @@ public class ExoPlayerSample extends AppCompatActivity implements TextureView.Su
     private Surface mSurface;
     private static final String TAG = "ExoPlayerSample";
 
-    private static String PLAY_URL2 = "http://img.locker.cmcm.com/livelock/uservideo/90f1353176bc83dffe2f246eba496c7a";
+    private static String PLAY_URL2 = "http://2449.vod.myqcloud.com/2449_22ca37a6ea9011e5acaaf51d105342e3.f20.mp4";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

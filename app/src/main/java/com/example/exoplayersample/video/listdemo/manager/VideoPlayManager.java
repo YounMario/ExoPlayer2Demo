@@ -1,7 +1,7 @@
-package com.example.exoplayersample.video.player.manager;
+package com.example.exoplayersample.video.listdemo.manager;
 
 
-import com.example.exoplayersample.video.player.PlayableWindow;
+import com.example.exoplayersample.video.listdemo.PlayableWindow;
 
 /**
  * Created by 龙泉 on 2016/10/19.

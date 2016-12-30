@@ -1,9 +1,9 @@
-package com.example.exoplayersample.video.player.manager;
+package com.example.exoplayersample.video.listdemo.manager;
 
 import android.util.Log;
 
-import com.example.exoplayersample.video.bean.VideoInfo;
-import com.example.exoplayersample.video.player.PlayableWindow;
+import com.example.exoplayersample.video.listdemo.bean.VideoInfo;
+import com.example.exoplayersample.video.listdemo.PlayableWindow;
 
 /**
  * Created by 龙泉 on 2016/12/23.

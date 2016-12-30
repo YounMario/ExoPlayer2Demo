@@ -6,7 +6,7 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewParent;
 
-import com.example.exoplayersample.video.player.PlayableWindow;
+import com.example.exoplayersample.video.listdemo.PlayableWindow;
 
 
 /**

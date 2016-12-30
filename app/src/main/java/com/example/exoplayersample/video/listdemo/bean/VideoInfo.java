@@ -1,4 +1,4 @@
-package com.example.exoplayersample.video.bean;
+package com.example.exoplayersample.video.listdemo.bean;
 
 import android.os.Parcel;
 import android.os.Parcelable;

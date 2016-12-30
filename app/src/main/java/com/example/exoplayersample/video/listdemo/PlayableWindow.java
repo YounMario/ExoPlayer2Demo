@@ -1,9 +1,9 @@
-package com.example.exoplayersample.video.player;
+package com.example.exoplayersample.video.listdemo;
 
 import android.view.Surface;
 import android.view.View;
 
-import com.example.exoplayersample.video.player.manager.VideoPlayManager;
+import com.example.exoplayersample.video.listdemo.manager.VideoPlayManager;
 import com.example.exoplayersample.video.player.presenter.IPlayerView;
 
 

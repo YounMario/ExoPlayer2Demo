@@ -1,4 +1,4 @@
-package com.example.exoplayersample.video.holder;
+package com.example.exoplayersample.video.listdemo.holder;
 
 import android.animation.ObjectAnimator;
 import android.graphics.SurfaceTexture;
@@ -13,11 +13,11 @@ import android.widget.TextView;
 
 import com.example.exoplayersample.App;
 import com.example.exoplayersample.R;
-import com.example.exoplayersample.video.anim.AnimationUtils;
-import com.example.exoplayersample.video.bean.VideoInfo;
-import com.example.exoplayersample.video.player.ExoPlayerWrapper;
-import com.example.exoplayersample.video.player.PlayableWindow;
-import com.example.exoplayersample.video.player.manager.VideoPlayManager;
+import com.example.exoplayersample.video.listdemo.anim.AnimationUtils;
+import com.example.exoplayersample.video.listdemo.bean.VideoInfo;
+import com.example.exoplayersample.video.listdemo.ExoPlayerWrapper;
+import com.example.exoplayersample.video.listdemo.PlayableWindow;
+import com.example.exoplayersample.video.listdemo.manager.VideoPlayManager;
 import com.example.exoplayersample.video.player.presenter.DefalutPlayerPresenter;
 import com.example.exoplayersample.video.player.presenter.PlayerPresenter;
 import com.example.exoplayersample.video.utils.ThreadUtils;
