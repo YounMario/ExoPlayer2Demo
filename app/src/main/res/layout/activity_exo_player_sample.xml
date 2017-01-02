@@ -11,11 +11,9 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.exoplayersample.ExoPlayerSample">
 
-    <TextureView
-        android:layout_width="wrap_content"
+    <com.example.exoplayersample.video.widget.DefaultPlayerView
+        android:layout_width="match_parent"
         android:layout_height="400dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/textureView" />
+        android:id="@+id/player_view" />
+
 </RelativeLayout>

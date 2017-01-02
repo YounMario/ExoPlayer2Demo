@@ -1,39 +1,36 @@
 package com.example.exoplayersample;
 
-import android.graphics.SurfaceTexture;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Surface;
-import android.view.TextureView;
 
-import com.younchen.myexoplayer.player.PlayerFactory;
+import com.example.exoplayersample.video.player.presenter.DefaultPlayerPresenter;
+import com.example.exoplayersample.video.player.presenter.IPlayerView;
 import com.younchen.myexoplayer.player.Player;
+import com.younchen.myexoplayer.player.PlayerFactory;
 import com.younchen.myexoplayer.player.listener.PlayerListener;
 
 
-public class ExoPlayerSample extends AppCompatActivity implements TextureView.SurfaceTextureListener {
+public class ExoPlayerSample extends AppCompatActivity  {
 
-    private TextureView mTextureView;
     private Player mPlayer;
-
-    private Surface mSurface;
     private static final String TAG = "ExoPlayerSample";
 
     private static String PLAY_URL2 = "http://2449.vod.myqcloud.com/2449_22ca37a6ea9011e5acaaf51d105342e3.f20.mp4";
+
+    private DefaultPlayerPresenter mDefaultPresenter;
+    private IPlayerView mPlayerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exo_player_sample);
-        mTextureView = (TextureView) findViewById(R.id.textureView);
-        mTextureView.setSurfaceTextureListener(this);
+        //create presenter
+        mPlayerView = (IPlayerView) findViewById(R.id.player_view);
         mPlayer = PlayerFactory.getDefaultPlayer();
-
-        Uri uri = Uri.parse(getVideoPlayPath());
-        mPlayer.setPlayUri(uri);
-        mPlayer.setPlayerListener(new PlayerListener() {
+        mDefaultPresenter = new DefaultPlayerPresenter(mPlayer, mPlayerView);
+        mDefaultPresenter.getPlayer().setPlayUri(Uri.parse(PLAY_URL2)).setPlayerListener(new PlayerListener() {
             @Override
             public void onBuffering() {
                 Log.d(TAG, "onBuffering");
@@ -68,37 +65,10 @@ public class ExoPlayerSample extends AppCompatActivity implements TextureView.Su
         return PLAY_URL2;
     }
 
-    @Override
-    public void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture, int i, int i1) {
-        if (mSurface != null) {
-            mSurface.release();
-        }
-        mSurface = new Surface(surfaceTexture);
-        mPlayer.setSurface(mSurface);
-        mPlayer.play();
-    }
-
-    @Override
-    public void onSurfaceTextureSizeChanged(SurfaceTexture surfaceTexture, int i, int i1) {
-
-    }
-
-    @Override
-    public boolean onSurfaceTextureDestroyed(SurfaceTexture surfaceTexture) {
-        if (mSurface != null) {
-            mSurface.release();
-        }
-        return true;
-    }
-
-    @Override
-    public void onSurfaceTextureUpdated(SurfaceTexture surfaceTexture) {
-
-    }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mPlayer.release();
+        mDefaultPresenter.release();
     }
 }

@@ -15,7 +15,7 @@ public interface Player {
 
     void play();
 
-    void setPlayUri(Uri uri);
+    Player setPlayUri(Uri uri);
 
     void release();
 

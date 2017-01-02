@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,7 +19,7 @@ import com.example.exoplayersample.video.listdemo.bean.VideoInfo;
 import com.example.exoplayersample.video.listdemo.ExoPlayerWrapper;
 import com.example.exoplayersample.video.listdemo.PlayableWindow;
 import com.example.exoplayersample.video.listdemo.manager.VideoPlayManager;
-import com.example.exoplayersample.video.player.presenter.DefalutPlayerPresenter;
+import com.example.exoplayersample.video.player.presenter.DefaultPlayerPresenter;
 import com.example.exoplayersample.video.player.presenter.PlayerPresenter;
 import com.example.exoplayersample.video.utils.ThreadUtils;
 import com.example.exoplayersample.video.utils.ViewUtils;
@@ -82,7 +83,7 @@ public class VideoItemHolder extends RecyclerView.ViewHolder implements Playable
         mTxtDescription = (TextView) itemView.findViewById(R.id.txt_desc);
         mExoPlayerWrapper = new ExoPlayerWrapper();
         mExoPlayerWrapper.setPlayableWindow(this);
-        mVideoPlayerPresenter = new DefalutPlayerPresenter(mExoPlayerWrapper.getPlayer(),this);
+        mVideoPlayerPresenter = new DefaultPlayerPresenter(mExoPlayerWrapper.getPlayer(),this);
 
 
         videoPlayerBottomBar.setupPlayerPresenter(mVideoPlayerPresenter);
@@ -176,6 +177,31 @@ public class VideoItemHolder extends RecyclerView.ViewHolder implements Playable
     @Override
     public View getVideoView() {
         return textureView;
+    }
+
+    @Override
+    public ViewGroup getVideoContainer() {
+        return (ViewGroup) itemView;
+    }
+
+    @Override
+    public View getProgressBar() {
+        return null;
+    }
+
+    @Override
+    public void onBuffering() {
+
+    }
+
+    @Override
+    public void onStartPlay() {
+
+    }
+
+    @Override
+    public void onError() {
+
     }
 
 

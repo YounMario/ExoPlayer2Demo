@@ -70,8 +70,9 @@ public class DefaultPlayer implements Player, ExoPlayer.EventListener {
     }
 
     @Override
-    public void setPlayUri(Uri uri) {
+    public Player setPlayUri(Uri uri) {
         this.mUri = uri;
+        return this;
     }
 
     @Override

@@ -23,4 +23,5 @@ public interface PlayerPresenter {
 
     void restoreLastParentView();
 
+    void release();
 }
