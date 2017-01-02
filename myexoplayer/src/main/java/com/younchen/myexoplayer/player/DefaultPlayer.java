@@ -49,6 +49,8 @@ public class DefaultPlayer implements Player, ExoPlayer.EventListener {
     private Surface mSurface;
     private PlayerListener mListener;
 
+    private static final String TAG = "DefaultPlayer";
+
     public  DefaultPlayer(){
         mainHandler = new Handler();
         simpleExoPlayer = getPlayerInstance();
@@ -183,17 +185,20 @@ public class DefaultPlayer implements Player, ExoPlayer.EventListener {
 
     @Override
     public void onTimelineChanged(Timeline timeline, Object manifest) {
-
+        Log.d(TAG, "onTimeLineChanged:" +  timeline.toString());
     }
 
     @Override
     public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
-
+        Log.d(TAG, "onTracksChanged track group:" +  trackGroups.toString() + " trackSelection:" + trackSelections);
     }
 
     @Override
     public void onLoadingChanged(boolean isLoading) {
-
+        Log.d(TAG, "onLoadingChanged:" + isLoading);
+        if (mListener != null) {
+            mListener.onLoading(isLoading);
+        }
     }
 
     @Override
@@ -202,9 +207,6 @@ public class DefaultPlayer implements Player, ExoPlayer.EventListener {
         switch (playbackState) {
             case ExoPlayer.STATE_BUFFERING:
                 text += "buffering";
-                if (mListener != null) {
-                    mListener.onBuffering();
-                }
                 break;
             case ExoPlayer.STATE_ENDED:
                 text += "ended";
@@ -217,8 +219,15 @@ public class DefaultPlayer implements Player, ExoPlayer.EventListener {
                 break;
             case ExoPlayer.STATE_READY:
                 text += "ready";
-                if (mListener != null && playWhenReady) {
-                    mListener.onStartPlay();
+                if (mListener != null ) {
+                    if(playWhenReady){
+                        mListener.onStartPlay();
+                    }else{
+                        mListener.onPausePlay();
+                    }
+                }
+                if(mListener != null && !playWhenReady){
+                    mListener.onPausePlay();
                 }
                 break;
             default:

@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.example.exoplayersample.R;
 import com.example.exoplayersample.video.player.presenter.PlayerPresenter;
 import com.example.exoplayersample.video.utils.ContextUtil;
+import com.example.exoplayersample.video.utils.TimeUtils;
 import com.younchen.myexoplayer.player.Player;
 
 import java.lang.ref.WeakReference;
@@ -87,8 +88,8 @@ public class VideoPlayerBottomBar extends RelativeLayout implements View.OnClick
                 updateTextView();
             }
         });
-        mEndTime.setText(timeToString(0));
-        mStartTime.setText(timeToString(0));
+        mEndTime.setText(TimeUtils.timeToString(0));
+        mStartTime.setText(TimeUtils.timeToString(0));
         mBtnFullScreen.setOnClickListener(this);
     }
 
@@ -107,17 +108,11 @@ public class VideoPlayerBottomBar extends RelativeLayout implements View.OnClick
             Player player = mPlayerReference.get().getPlayer();
             long duringTime = player.getDuration();
             long currentPos = (long) player.getCurrentPosition();
-            mEndTime.setText(timeToString(duringTime));
-            mStartTime.setText(timeToString(currentPos));
+            mEndTime.setText(TimeUtils.timeToString(duringTime));
+            mStartTime.setText(TimeUtils.timeToString(currentPos));
         }
     }
 
-    private String timeToString(long milliseconds) {
-        long totalSeconds = milliseconds / 1000;
-        int minutes = (int) totalSeconds / 60;
-        int seconds = (int) totalSeconds % 60;
-        return String.format("%d:%02d", minutes, seconds);
-    }
 
     public void setBufferBarVisible(boolean needShow) {
         if (mVideoProgressBar != null) {

@@ -8,7 +8,7 @@ import com.google.android.exoplayer2.ExoPlaybackException;
 
 public interface PlayerListener {
 
-    void onBuffering();
+    void onLoading(boolean isLoading);
 
     void onPlayEnd();
 
@@ -17,4 +17,6 @@ public interface PlayerListener {
     void onError(Exception error);
 
     void onPreparing();
+
+    void onPausePlay();
 }

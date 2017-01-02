@@ -25,7 +25,7 @@ public class ExoPlayerWrapper {
         mExoPlayer = PlayerFactory.getDefaultPlayer();
         mExoPlayer.setPlayerListener(new PlayerListener() {
             @Override
-            public void onBuffering() {
+            public void onLoading(boolean isLoading) {
                 if (currentWindow != null) {
                     currentWindow.showLoading();
                 }
@@ -55,6 +55,11 @@ public class ExoPlayerWrapper {
                     currentWindow.updateUiToPrepare();
                     currentWindow.showLoading();
                 }
+            }
+
+            @Override
+            public void onPausePlay() {
+
             }
         });
     }

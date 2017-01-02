@@ -1,20 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <SurfaceView
-        android:id="@+id/texture_view"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_above="@+id/control_panel">
 
-    <com.example.exoplayersample.video.widget.VideoProgressBar
-        android:id="@+id/progress_bar"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
+        <SurfaceView
+            android:id="@+id/texture_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <android.support.v7.widget.AppCompatImageView
+            android:layout_gravity="center"
+            android:id="@+id/img_loading"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/icon_loading"/>
+    </FrameLayout>
+
+
+    <LinearLayout
+        android:id="@+id/control_panel"
+        android:background="@color/light_black"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
         android:layout_alignParentBottom="true"
-        android:layout_width="match_parent"
-        android:layout_height="36dp" />
+        android:orientation="vertical">
 
-</merge>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
+
+            <TextView
+                android:id="@+id/txt_play_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/common_margin"
+                android:textColor="@color/white"
+                android:layout_marginRight="@dimen/common_margin" />
+
+            <com.example.exoplayersample.video.widget.VideoProgressBar
+                android:id="@+id/progress_bar"
+                android:layout_width="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_height="36dp"
+                android:layout_toLeftOf="@+id/txt_end_time"
+                android:layout_toRightOf="@+id/txt_play_time" />
+
+            <TextView
+                android:id="@+id/txt_end_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:textColor="@color/white"
+                android:layout_marginLeft="@dimen/common_margin"
+                android:layout_marginRight="@dimen/common_margin" />
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/btn_play"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerInParent="true"
+                android:layout_margin="8dp"
+                android:src="@drawable/icon_play"
+
+                />
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>

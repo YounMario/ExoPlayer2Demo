@@ -19,6 +19,7 @@ import com.example.exoplayersample.video.listdemo.bean.VideoInfo;
 import com.example.exoplayersample.video.listdemo.ExoPlayerWrapper;
 import com.example.exoplayersample.video.listdemo.PlayableWindow;
 import com.example.exoplayersample.video.listdemo.manager.VideoPlayManager;
+import com.example.exoplayersample.video.player.listener.VideoControlListener;
 import com.example.exoplayersample.video.player.presenter.DefaultPlayerPresenter;
 import com.example.exoplayersample.video.player.presenter.PlayerPresenter;
 import com.example.exoplayersample.video.utils.ThreadUtils;
@@ -204,6 +205,21 @@ public class VideoItemHolder extends RecyclerView.ViewHolder implements Playable
 
     }
 
+    @Override
+    public void setControlListener(VideoControlListener videoControlListener) {
+
+    }
+
+    @Override
+    public void onPausePlay() {
+
+    }
+
+    @Override
+    public void onTimeChanged(String playTime, String totalTime) {
+
+    }
+
 
     @Override
     public Surface getPlayableSurface() {
@@ -346,7 +362,7 @@ public class VideoItemHolder extends RecyclerView.ViewHolder implements Playable
     @Override
     public void onRelease() {
         cancelDelayHideControlBar();
-        stopRoationAnimation();
+        stopRotateAnimation();
         stopBottomBarAnimation();
         stopPlayButtonAnimation();
         releasePlayer();
@@ -450,19 +466,19 @@ public class VideoItemHolder extends RecyclerView.ViewHolder implements Playable
     private void startLoading() {
         if (ivLoading != null) {
             ivLoading.setVisibility(View.VISIBLE);
-            startRoationAnimation(ivLoading);
+            startRotateAnimation(ivLoading);
         }
     }
 
     private void stopLoading() {
         if (ivLoading != null) {
             ivLoading.setVisibility(View.GONE);
-            stopRoationAnimation();
+            stopRotateAnimation();
         }
     }
 
 
-    private void startRoationAnimation(View imageView) {
+    private void startRotateAnimation(View imageView) {
         if (roatingAnimation != null) {
             roatingAnimation.cancel();
             roatingAnimation = null;
@@ -471,7 +487,7 @@ public class VideoItemHolder extends RecyclerView.ViewHolder implements Playable
         roatingAnimation.start();
     }
 
-    private void stopRoationAnimation() {
+    private void stopRotateAnimation() {
         if (roatingAnimation != null) {
             roatingAnimation.cancel();
             roatingAnimation = null;
