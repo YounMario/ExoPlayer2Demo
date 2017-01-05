@@ -28,7 +28,7 @@ public class ExoPlayerSample extends AppCompatActivity  {
         mPlayerView = (IPlayerView) findViewById(R.id.player_view);
         mPlayer = PlayerFactory.getDefaultPlayer();
         mDefaultPresenter = new DefaultPlayerPresenter(mPlayer, mPlayerView);
-        mDefaultPresenter.getPlayer().setPlayUri(Uri.parse(PLAY_URL2));
+        mDefaultPresenter.getPlayer().setPlayUri(Uri.parse("/android_asset/video_demo.mp4"));
     }
 
     private String getVideoPlayPath() {

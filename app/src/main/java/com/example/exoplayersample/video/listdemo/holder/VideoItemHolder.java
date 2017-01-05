@@ -220,6 +220,16 @@ public class VideoItemHolder extends RecyclerView.ViewHolder implements Playable
 
     }
 
+    @Override
+    public void onFullScreenMode() {
+
+    }
+
+    @Override
+    public void onQuitFullScreenMode() {
+
+    }
+
 
     @Override
     public Surface getPlayableSurface() {

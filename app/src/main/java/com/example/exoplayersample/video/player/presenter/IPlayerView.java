@@ -28,4 +28,8 @@ public interface IPlayerView {
     void onPausePlay();
 
     void onTimeChanged(String playTime, String totalTime);
+
+    void onFullScreenMode();
+
+    void onQuitFullScreenMode();
 }

@@ -3,7 +3,7 @@ package com.example.exoplayersample.video.widget;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.SurfaceView;
+import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -20,10 +20,10 @@ import com.example.exoplayersample.video.utils.TimeUtils;
  * Created by 龙泉 on 2017/1/2 0002.
  */
 
-public class DefaultPlayerView extends RelativeLayout implements IPlayerView {
+public class DefaultPlayerView extends RelativeLayout implements IPlayerView, View.OnClickListener {
 
     private View mRootView;
-    private SurfaceView mTextureView;
+    private TextureView mTextureView;
     private VideoProgressBar mVideoProgressBar;
 
     private TextView mPlayTime;
@@ -31,10 +31,12 @@ public class DefaultPlayerView extends RelativeLayout implements IPlayerView {
 
     private ImageView mPlayBtn;
     private ImageView mLoading;
+    private ImageView mFullScreenBtn;
 
     private VideoControlListener mVideoControlListener;
     private ObjectAnimator mRotateAnimation;
 
+    private boolean mIsFullScreen;
 
     public DefaultPlayerView(Context context) {
         this(context, null);
@@ -48,6 +50,11 @@ public class DefaultPlayerView extends RelativeLayout implements IPlayerView {
         super(context, attrs, defStyleAttr);
         initView();
         initEvent();
+        initData();
+    }
+
+    private void initData() {
+        mIsFullScreen = false;
     }
 
     private void initEvent() {
@@ -77,7 +84,7 @@ public class DefaultPlayerView extends RelativeLayout implements IPlayerView {
 
     private void initView() {
         mRootView = inflate(getContext(), R.layout.layout_default_player_view, this);
-        mTextureView = (SurfaceView) findViewById(R.id.texture_view);
+        mTextureView = (TextureView) findViewById(R.id.texture_view);
         mVideoProgressBar = (VideoProgressBar) findViewById(R.id.progress_bar);
         mLoading = (ImageView) findViewById(R.id.img_loading);
 
@@ -90,6 +97,8 @@ public class DefaultPlayerView extends RelativeLayout implements IPlayerView {
         mPlayBtn = (ImageView) findViewById(R.id.btn_play);
         mLoading.setVisibility(GONE);
 
+        mFullScreenBtn = (ImageView) findViewById(R.id.btn_full_screen);
+        mFullScreenBtn.setOnClickListener(this);
     }
 
 
@@ -136,6 +145,22 @@ public class DefaultPlayerView extends RelativeLayout implements IPlayerView {
     }
 
     @Override
+    public void onFullScreenMode() {
+        mIsFullScreen = true;
+        if (mVideoControlListener != null) {
+            mVideoControlListener.onEnterFullScreenMode();
+        }
+    }
+
+    @Override
+    public void onQuitFullScreenMode() {
+        mIsFullScreen = false;
+        if (mVideoControlListener != null) {
+            mVideoControlListener.onQuitFullScreenMode();
+        }
+    }
+
+    @Override
     public void setControlListener(VideoControlListener videoControlListener) {
         mVideoControlListener = videoControlListener;
     }
@@ -170,4 +195,16 @@ public class DefaultPlayerView extends RelativeLayout implements IPlayerView {
         }
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.btn_full_screen:
+                if (mIsFullScreen) {
+                    onQuitFullScreenMode();
+                } else {
+                    onFullScreenMode();
+                }
+                break;
+        }
+    }
 }

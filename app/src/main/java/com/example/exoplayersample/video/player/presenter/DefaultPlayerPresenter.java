@@ -15,7 +15,6 @@ import com.example.exoplayersample.video.widget.VideoProgressBar;
 import com.younchen.myexoplayer.player.Player;
 import com.younchen.myexoplayer.player.listener.PlayerListener;
 
-import junit.framework.Assert;
 
 /**
  * Created by 龙泉 on 2016/12/29.
@@ -112,7 +111,21 @@ public class DefaultPlayerPresenter implements PlayerPresenter, TextureView.Surf
                 //not good solution .
                 mPlayerView.onTimeChanged(TimeUtils.timeToString((long) mPlayer.getCurrentPosition()), TimeUtils.timeToString(mPlayer.getDuration()));
             }
+
+            @Override
+            public void onEnterFullScreenMode() {
+                changeToFullScreenMode();
+            }
+
+            @Override
+            public void onQuitFullScreenMode() {
+
+            }
         });
+    }
+
+    private void changeToFullScreenMode() {
+
     }
 
     private void setCurrentState(int state) {
