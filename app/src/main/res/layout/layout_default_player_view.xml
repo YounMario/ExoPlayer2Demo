@@ -29,6 +29,14 @@
                 android:layout_gravity="center"
                 android:indeterminateTint="@color/white"
                 android:indeterminateTintMode="src_atop" />
+
+
+            <com.google.android.exoplayer2.ui.SubtitleView
+                android:id="@+id/subtitle_view"
+                android:layout_gravity="bottom"
+                android:layout_width="match_parent"
+                android:layout_height="80dp" />
+
         </FrameLayout>
 
 
@@ -99,6 +107,7 @@
                     android:padding="8dp"
                     app:srcCompat="@drawable/icon_full_screen" />
             </RelativeLayout>
+
 
         </LinearLayout>
     </RelativeLayout>

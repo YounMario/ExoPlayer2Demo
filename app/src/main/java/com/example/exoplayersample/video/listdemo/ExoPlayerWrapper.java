@@ -4,9 +4,12 @@ import android.net.Uri;
 import android.util.Log;
 import android.view.Surface;
 
+import com.google.android.exoplayer2.text.Cue;
 import com.younchen.myexoplayer.player.Player;
 import com.younchen.myexoplayer.player.PlayerFactory;
 import com.younchen.myexoplayer.player.listener.PlayerListener;
+
+import java.util.List;
 
 /**
  * Created by 龙泉 on 2016/10/19.
@@ -50,6 +53,11 @@ public class ExoPlayerWrapper {
 
             @Override
             public void onPausePlay() {
+
+            }
+
+            @Override
+            public void onSubtitleOutput(List<Cue> cues) {
 
             }
         });
@@ -116,7 +124,7 @@ public class ExoPlayerWrapper {
 
     public void setUrl(String url) {
         Uri uri = Uri.parse(url);
-        mExoPlayer.setPlayUri(uri);
+        mExoPlayer.setVideoUri(uri);
     }
 
     public long getCurrentSeek() {

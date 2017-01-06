@@ -12,28 +12,36 @@ import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.LoadControl;
+import com.google.android.exoplayer2.Renderer;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.MergingMediaSource;
+import com.google.android.exoplayer2.source.SingleSampleMediaSource;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.source.dash.DashMediaSource;
 import com.google.android.exoplayer2.source.dash.DefaultDashChunkSource;
 import com.google.android.exoplayer2.source.hls.HlsMediaSource;
 import com.google.android.exoplayer2.source.smoothstreaming.DefaultSsChunkSource;
 import com.google.android.exoplayer2.source.smoothstreaming.SsMediaSource;
+import com.google.android.exoplayer2.text.Cue;
+import com.google.android.exoplayer2.text.TextRenderer;
 import com.google.android.exoplayer2.trackselection.AdaptiveVideoTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
+import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.BandwidthMeter;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
+import com.google.android.exoplayer2.util.MimeTypes;
 import com.google.android.exoplayer2.util.Util;
 import com.younchen.myexoplayer.MyExoPlayerEnv;
 import com.younchen.myexoplayer.okhttp.CacheOkHttpDataSourceFactory;
@@ -42,19 +50,22 @@ import com.younchen.myexoplayer.util.FileUtils;
 import com.younchen.myexoplayer.util.UriUtils;
 
 import java.io.File;
+import java.util.List;
 
 import okhttp3.OkHttpClient;
 
 /**
  * Created by 龙泉 on 2016/12/26.
  */
-public class DefaultPlayer implements Player, ExoPlayer.EventListener {
+public class DefaultPlayer implements Player, ExoPlayer.EventListener , TextRenderer.Output{
 
     private SimpleExoPlayer simpleExoPlayer;
     private String mUserAgent;
     private Handler mainHandler;
 
-    private Uri mUri;
+    private Uri mVideoUri;
+    private Uri mSubtitleUri;
+
     private Surface mSurface;
     private PlayerListener mListener;
 
@@ -65,6 +76,7 @@ public class DefaultPlayer implements Player, ExoPlayer.EventListener {
     public  DefaultPlayer(){
         mainHandler = new Handler();
         simpleExoPlayer = getPlayerInstance();
+        simpleExoPlayer.addListener(this);
         mUserAgent = Util.getUserAgent(MyExoPlayerEnv.getContext(), "ExoPlayerDemo");
     }
 
@@ -83,8 +95,14 @@ public class DefaultPlayer implements Player, ExoPlayer.EventListener {
     }
 
     @Override
-    public Player setPlayUri(Uri uri) {
-        this.mUri = uri;
+    public Player setVideoUri(Uri uri) {
+        this.mVideoUri = uri;
+        return this;
+    }
+
+    @Override
+    public Player setSubTitleUri(Uri subTitleUri) {
+        this.mSubtitleUri = subTitleUri;
         return this;
     }
 
@@ -155,7 +173,8 @@ public class DefaultPlayer implements Player, ExoPlayer.EventListener {
         simpleExoPlayer = getPlayerInstance();
         simpleExoPlayer.addListener(this);
         simpleExoPlayer.setVideoSurface(mSurface);
-        simpleExoPlayer.prepare(buildMediaSource(mUri));
+        simpleExoPlayer.prepare(buildMediaSource(mVideoUri));
+        simpleExoPlayer.setTextOutput(this);
     }
 
     private MediaSource buildMediaSource(Uri uri) {
@@ -169,8 +188,15 @@ public class DefaultPlayer implements Player, ExoPlayer.EventListener {
         if(useOkHttp){
             return new ExtractorMediaSource(uri, getDataSourceFactory(uri), new DefaultExtractorsFactory(),
                     mainHandler, null);
-        }else{
-            return buildMediaSource(MyExoPlayerEnv.getContext(), uri);
+        } else {
+            MediaSource videoMediaSource = buildMediaSource(MyExoPlayerEnv.getContext(), uri);
+
+            Format textFormat = Format.createTextSampleFormat(null, MimeTypes.APPLICATION_SUBRIP,
+                    null, Format.NO_VALUE, Format.NO_VALUE, "en", null);
+
+            MediaSource textMediaSource = new SingleSampleMediaSource(mSubtitleUri, new DefaultDataSourceFactory(MyExoPlayerEnv.getContext(), mUserAgent),
+                    textFormat, C.TIME_UNSET);
+            return new MergingMediaSource(videoMediaSource, textMediaSource);
         }
     }
 
@@ -263,7 +289,7 @@ public class DefaultPlayer implements Player, ExoPlayer.EventListener {
                         mListener.onPausePlay();
                     }
                 }
-                if(mListener != null && !playWhenReady){
+                if (mListener != null && !playWhenReady) {
                     mListener.onPausePlay();
                 }
                 break;
@@ -284,5 +310,12 @@ public class DefaultPlayer implements Player, ExoPlayer.EventListener {
     @Override
     public void onPositionDiscontinuity() {
 
+    }
+
+    @Override
+    public void onCues(List<Cue> cues) {
+        if (mListener != null) {
+            mListener.onSubtitleOutput(cues);
+        }
     }
 }

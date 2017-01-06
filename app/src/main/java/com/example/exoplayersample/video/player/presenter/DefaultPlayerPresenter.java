@@ -16,8 +16,11 @@ import com.example.exoplayersample.R;
 import com.example.exoplayersample.video.player.listener.VideoControlListener;
 import com.example.exoplayersample.video.utils.ContextUtil;
 import com.example.exoplayersample.video.utils.TimeUtils;
+import com.google.android.exoplayer2.text.Cue;
 import com.younchen.myexoplayer.player.Player;
 import com.younchen.myexoplayer.player.listener.PlayerListener;
+
+import java.util.List;
 
 
 /**
@@ -73,6 +76,7 @@ public class DefaultPlayerPresenter implements PlayerPresenter, TextureView.Surf
         setStateListener();
         setControlListener();
     }
+
 
     private void setControlListener() {
         mPlayerView.setControlListener(new VideoControlListener() {
@@ -196,6 +200,11 @@ public class DefaultPlayerPresenter implements PlayerPresenter, TextureView.Surf
                 Log.d(TAG, "onPausePlay");
                 mPlayerView.onPausePlay();
                 setCurrentState(STATE_PAUSE);
+            }
+
+            @Override
+            public void onSubtitleOutput(List<Cue> cues) {
+                mPlayerView.onReceiveSubtitle(cues);
             }
         });
     }

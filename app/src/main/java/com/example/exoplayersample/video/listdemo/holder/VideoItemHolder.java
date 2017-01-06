@@ -25,7 +25,10 @@ import com.example.exoplayersample.video.player.presenter.PlayerPresenter;
 import com.example.exoplayersample.video.utils.ThreadUtils;
 import com.example.exoplayersample.video.utils.ViewUtils;
 import com.example.exoplayersample.video.widget.VideoPlayerBottomBar;
+import com.google.android.exoplayer2.text.Cue;
 import com.squareup.picasso.Picasso;
+
+import java.util.List;
 
 
 /**
@@ -204,6 +207,11 @@ public class VideoItemHolder extends RecyclerView.ViewHolder implements Playable
 
     @Override
     public void setControlListener(VideoControlListener videoControlListener) {
+
+    }
+
+    @Override
+    public void onReceiveSubtitle(List<Cue> cues) {
 
     }
 

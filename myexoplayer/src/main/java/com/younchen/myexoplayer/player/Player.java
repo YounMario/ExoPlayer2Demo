@@ -15,7 +15,9 @@ public interface Player {
 
     void play();
 
-    Player setPlayUri(Uri uri);
+    Player setVideoUri(Uri uri);
+
+    Player setSubTitleUri(Uri subTitleUri);
 
     void release();
 

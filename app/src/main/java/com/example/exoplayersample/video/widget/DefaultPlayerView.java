@@ -16,6 +16,10 @@ import com.example.exoplayersample.R;
 import com.example.exoplayersample.video.player.listener.VideoControlListener;
 import com.example.exoplayersample.video.player.presenter.IPlayerView;
 import com.example.exoplayersample.video.utils.TimeUtils;
+import com.google.android.exoplayer2.text.Cue;
+import com.google.android.exoplayer2.ui.SubtitleView;
+
+import java.util.List;
 
 /**
  * Created by 龙泉 on 2017/1/2 0002.
@@ -39,6 +43,8 @@ public class DefaultPlayerView extends RelativeLayout implements IPlayerView, Vi
     private boolean mIsFullScreen;
     private ViewGroup mPlayerContainer;
     private ViewGroup mPlayerView;
+
+    private SubtitleView mSubtitleView;
 
     private static final String TAG = "DefaultPlayerView";
 
@@ -65,7 +71,7 @@ public class DefaultPlayerView extends RelativeLayout implements IPlayerView, Vi
         mPlayBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(mVideoControlListener != null){
+                if (mVideoControlListener != null) {
                     mVideoControlListener.onPlayClicked();
                 }
             }
@@ -112,6 +118,8 @@ public class DefaultPlayerView extends RelativeLayout implements IPlayerView, Vi
         mFullScreenBtn = (ImageView) findViewById(R.id.btn_full_screen);
         mFullScreenBtn.setOnClickListener(this);
         mFullScreenBtn.setImageResource(R.drawable.icon_full_screen);
+
+        mSubtitleView = (SubtitleView) findViewById(R.id.subtitle_view);
     }
 
 
@@ -164,7 +172,6 @@ public class DefaultPlayerView extends RelativeLayout implements IPlayerView, Vi
 
     @Override
     public void onBufferChanged(int currentBuffer) {
-
     }
 
     private void onFullScreenMode() {
@@ -193,10 +200,15 @@ public class DefaultPlayerView extends RelativeLayout implements IPlayerView, Vi
         mVideoControlListener = videoControlListener;
     }
 
+    @Override
+    public void onReceiveSubtitle(List<Cue> cues) {
+        mSubtitleView.setCues(cues);
+    }
+
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.btn_full_screen:
                 if (mIsFullScreen) {
                     onQuitFullScreenMode();
