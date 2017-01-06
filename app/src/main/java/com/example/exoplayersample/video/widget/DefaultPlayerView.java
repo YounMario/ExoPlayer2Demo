@@ -1,6 +1,5 @@
 package com.example.exoplayersample.video.widget;
 
-import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
