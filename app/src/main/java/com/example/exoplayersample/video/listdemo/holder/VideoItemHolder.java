@@ -84,7 +84,7 @@ public class VideoItemHolder extends RecyclerView.ViewHolder implements Playable
         mTxtDescription = (TextView) itemView.findViewById(R.id.txt_desc);
         mExoPlayerWrapper = new ExoPlayerWrapper();
         mExoPlayerWrapper.setPlayableWindow(this);
-        mVideoPlayerPresenter = new DefaultPlayerPresenter(mExoPlayerWrapper.getPlayer(),this);
+        mVideoPlayerPresenter = new DefaultPlayerPresenter(App.getInstance(), mExoPlayerWrapper.getPlayer(),this);
 
 
         videoPlayerBottomBar.setupPlayerPresenter(mVideoPlayerPresenter);
@@ -172,21 +172,23 @@ public class VideoItemHolder extends RecyclerView.ViewHolder implements Playable
 
     @Override
     public View getPlayerView() {
-        return itemView;
+        return null;
     }
+
 
     @Override
     public View getVideoView() {
         return textureView;
     }
 
-    @Override
-    public ViewGroup getVideoContainer() {
-        return (ViewGroup) itemView;
-    }
 
     @Override
     public View getProgressBar() {
+        return null;
+    }
+
+    @Override
+    public ViewGroup getPlayerViewContainer() {
         return null;
     }
 

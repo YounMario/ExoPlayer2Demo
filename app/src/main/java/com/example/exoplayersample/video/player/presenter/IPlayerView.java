@@ -13,9 +13,11 @@ public interface IPlayerView {
 
     View getVideoView();
 
-    ViewGroup getVideoContainer();
+    View getPlayerView();
 
     View getProgressBar();
+
+    ViewGroup getPlayerViewContainer();
 
     void onBuffering();
 

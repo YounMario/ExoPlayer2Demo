@@ -1,11 +1,13 @@
 package com.younchen.myexoplayer.player;
 
+import android.content.Context;
 import android.net.Uri;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Surface;
 
+import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
@@ -17,6 +19,11 @@ import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.TrackGroupArray;
+import com.google.android.exoplayer2.source.dash.DashMediaSource;
+import com.google.android.exoplayer2.source.dash.DefaultDashChunkSource;
+import com.google.android.exoplayer2.source.hls.HlsMediaSource;
+import com.google.android.exoplayer2.source.smoothstreaming.DefaultSsChunkSource;
+import com.google.android.exoplayer2.source.smoothstreaming.SsMediaSource;
 import com.google.android.exoplayer2.trackselection.AdaptiveVideoTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
@@ -26,11 +33,13 @@ import com.google.android.exoplayer2.upstream.BandwidthMeter;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
+import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.younchen.myexoplayer.MyExoPlayerEnv;
 import com.younchen.myexoplayer.okhttp.CacheOkHttpDataSourceFactory;
 import com.younchen.myexoplayer.player.listener.PlayerListener;
 import com.younchen.myexoplayer.util.FileUtils;
+import com.younchen.myexoplayer.util.UriUtils;
 
 import java.io.File;
 
@@ -50,6 +59,8 @@ public class DefaultPlayer implements Player, ExoPlayer.EventListener {
     private PlayerListener mListener;
 
     private static final String TAG = "DefaultPlayer";
+    private static final String USER_AGENT = "DefaultPlayer";
+    private static final DefaultBandwidthMeter BANDWIDTH_METER = new DefaultBandwidthMeter();
 
     public  DefaultPlayer(){
         mainHandler = new Handler();
@@ -155,18 +166,18 @@ public class DefaultPlayer implements Player, ExoPlayer.EventListener {
         } else {
             useOkHttp = false;
         }
-        return new ExtractorMediaSource(uri, getDataSourceFactory(useOkHttp, uri), new DefaultExtractorsFactory(),
-                mainHandler, null);
+        if(useOkHttp){
+            return new ExtractorMediaSource(uri, getDataSourceFactory(uri), new DefaultExtractorsFactory(),
+                    mainHandler, null);
+        }else{
+            return buildMediaSource(MyExoPlayerEnv.getContext(), uri);
+        }
     }
 
-    private DataSource.Factory getDataSourceFactory(boolean useOkhttp, Uri uri) {
-        if (useOkhttp) {
-            String path = FileUtils.convertUrlToLocalPath(uri.getPath());
-            File cacheFile = new File(path);
-            return new CacheOkHttpDataSourceFactory(new OkHttpClient(), mUserAgent, new DefaultBandwidthMeter(), cacheFile);
-        } else {
-            return new DefaultDataSourceFactory(MyExoPlayerEnv.getContext(), mUserAgent);
-        }
+    private DataSource.Factory getDataSourceFactory(Uri uri) {
+        String path = FileUtils.convertUrlToLocalPath(uri.getPath());
+        File cacheFile = new File(path);
+        return new CacheOkHttpDataSourceFactory(new OkHttpClient(), mUserAgent, new DefaultBandwidthMeter(), cacheFile);
     }
 
 
@@ -180,6 +191,32 @@ public class DefaultPlayer implements Player, ExoPlayer.EventListener {
         LoadControl loadControl = new DefaultLoadControl();
 
         return ExoPlayerFactory.newSimpleInstance(MyExoPlayerEnv.getContext(), trackSelector, loadControl);
+    }
+
+    private MediaSource buildMediaSource(Context context, Uri uri) {
+        int type = UriUtils.inferContentType(uri.toString());
+        switch (type) {
+            case C.TYPE_SS:
+                return new SsMediaSource(uri, new DefaultDataSourceFactory(context, null,
+                        new DefaultHttpDataSourceFactory(USER_AGENT, null)),
+                        new DefaultSsChunkSource.Factory(new DefaultDataSourceFactory(context, BANDWIDTH_METER,
+                                new DefaultHttpDataSourceFactory(USER_AGENT, BANDWIDTH_METER))), mainHandler, null);
+            case C.TYPE_DASH:
+                return new DashMediaSource(uri, new DefaultDataSourceFactory(context, null,
+                        new DefaultHttpDataSourceFactory(USER_AGENT, null)),
+                        new DefaultDashChunkSource.Factory(new DefaultDataSourceFactory(context, BANDWIDTH_METER,
+                                new DefaultHttpDataSourceFactory(USER_AGENT, BANDWIDTH_METER))), mainHandler, null);
+            case C.TYPE_HLS:
+                return new HlsMediaSource(uri, new DefaultDataSourceFactory(context, BANDWIDTH_METER,
+                        new DefaultHttpDataSourceFactory(USER_AGENT, BANDWIDTH_METER)), mainHandler, null);
+            case C.TYPE_OTHER:
+                return new ExtractorMediaSource(uri, new DefaultDataSourceFactory(context, BANDWIDTH_METER,
+                        new DefaultHttpDataSourceFactory(USER_AGENT, BANDWIDTH_METER)), new DefaultExtractorsFactory(),
+                        mainHandler, null);
+            default: {
+                throw new IllegalStateException("Unsupported type: " + type);
+            }
+        }
     }
 
 

@@ -1,5 +1,6 @@
 package com.example.exoplayersample.video.player.presenter;
 
+import android.content.Context;
 import android.graphics.SurfaceTexture;
 import android.util.Log;
 import android.view.Surface;
@@ -8,8 +9,11 @@ import android.view.SurfaceView;
 import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 
+import com.example.exoplayersample.R;
 import com.example.exoplayersample.video.player.listener.VideoControlListener;
+import com.example.exoplayersample.video.utils.ContextUtil;
 import com.example.exoplayersample.video.utils.TimeUtils;
 import com.example.exoplayersample.video.widget.VideoProgressBar;
 import com.younchen.myexoplayer.player.Player;
@@ -37,20 +41,22 @@ public class DefaultPlayerPresenter implements PlayerPresenter, TextureView.Surf
     private Surface mSurface;
 
     private int mCurrentState;
+    private Context mContext;
 
-    public DefaultPlayerPresenter(Player player, IPlayerView playerView) {
+    public DefaultPlayerPresenter(Context context, Player player, IPlayerView playerView) {
         mPlayer = player;
         mPlayerView = playerView;
+        mContext = context;
         checkPlayer();
         initData();
         setEventListener();
     }
 
     private void checkPlayer() {
-        if(mPlayer == null){
+        if (mPlayer == null) {
             throw new RuntimeException("player is null");
         }
-        if(mPlayerView == null){
+        if (mPlayerView == null) {
             throw new RuntimeException("player view is null");
         }
     }
@@ -81,7 +87,7 @@ public class DefaultPlayerPresenter implements PlayerPresenter, TextureView.Surf
             @Override
             public void onPlayClicked() {
 
-                switch (mCurrentState){
+                switch (mCurrentState) {
                     case STATE_NORMAL:
                         mPlayer.play();
                         setCurrentState(STATE_PLAY);
@@ -102,7 +108,7 @@ public class DefaultPlayerPresenter implements PlayerPresenter, TextureView.Surf
 
             @Override
             public void onSeek(int progress) {
-                long seekTime = (long) (progress * 1.0 * mPlayer.getDuration() /100);
+                long seekTime = (long) (progress * 1.0 * mPlayer.getDuration() / 100);
                 mPlayer.seekTo(seekTime);
             }
 
@@ -119,13 +125,50 @@ public class DefaultPlayerPresenter implements PlayerPresenter, TextureView.Surf
 
             @Override
             public void onQuitFullScreenMode() {
-
+                changeToNormalScreenMode();
             }
         });
     }
 
-    private void changeToFullScreenMode() {
+    private void changeToNormalScreenMode() {
+        ViewGroup windowView = (ViewGroup) ContextUtil.scanForActivity(mContext)
+                .findViewById(Window.ID_ANDROID_CONTENT);
 
+        View view = windowView.findViewById(R.id.full_screen_view);
+        if (view != null) {
+            windowView.removeView(view);
+        }
+
+        View videoView = mPlayerView.getPlayerView();
+        removeParent(videoView);
+        mPlayerView.getPlayerViewContainer().addView(videoView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+    }
+
+    private void changeToFullScreenMode() {
+        ViewGroup windowView = (ViewGroup) ContextUtil.scanForActivity(mContext)
+                .findViewById(Window.ID_ANDROID_CONTENT);
+
+        View view = windowView.findViewById(R.id.full_screen_view);
+        if (view != null) {
+            windowView.removeView(view);
+        }
+
+        View fullScreenView = View.inflate(mContext, R.layout.layout_full_screen_player, null);
+        View videoView = mPlayerView.getPlayerView();
+        removeParent(videoView);
+        ViewGroup fullScreenViewContainer = (ViewGroup) fullScreenView.findViewById(R.id.play_view_container);
+        fullScreenViewContainer.addView(videoView);
+        windowView.addView(fullScreenView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+    }
+
+
+    private void removeParent(View view) {
+        if (view != null) {
+            ViewGroup videoViewParent = (ViewGroup) view.getParent();
+            if (videoViewParent != null) {
+                videoViewParent.removeView(view);
+            }
+        }
     }
 
     private void setCurrentState(int state) {
@@ -136,7 +179,7 @@ public class DefaultPlayerPresenter implements PlayerPresenter, TextureView.Surf
         mPlayer.setPlayerListener(new PlayerListener() {
             @Override
             public void onLoading(boolean isLoading) {
-                if(isLoading){
+                if (isLoading) {
                     mPlayerView.onBuffering();
                 }
             }
@@ -238,13 +281,11 @@ public class DefaultPlayerPresenter implements PlayerPresenter, TextureView.Surf
     //============================== for texture view==============================
     @Override
     public void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture, int i, int i1) {
-        if (mSurface != null) {
-            mSurface.release();
-            mSurface = null;
+        if (mSurface == null) {
+            mSurface = new Surface(surfaceTexture);
+            mPlayer.setSurface(mSurface);
+            mPlayer.play();
         }
-        mSurface = new Surface(surfaceTexture);
-        mPlayer.setSurface(mSurface);
-        mPlayer.play();
     }
 
     @Override
@@ -254,10 +295,8 @@ public class DefaultPlayerPresenter implements PlayerPresenter, TextureView.Surf
 
     @Override
     public boolean onSurfaceTextureDestroyed(SurfaceTexture surfaceTexture) {
-        if (mSurface != null) {
-            mSurface.release();
-            mSurface = null;
-        }
+        mSurface = null;
+        mPlayer.release();
         return true;
     }
 

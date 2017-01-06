@@ -6,6 +6,7 @@ import android.util.AttributeSet;
 import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -37,6 +38,9 @@ public class DefaultPlayerView extends RelativeLayout implements IPlayerView, Vi
     private ObjectAnimator mRotateAnimation;
 
     private boolean mIsFullScreen;
+    private ViewGroup mPlayerContainer;
+    private ViewGroup mPlayerView;
+
 
     public DefaultPlayerView(Context context) {
         this(context, null);
@@ -84,6 +88,7 @@ public class DefaultPlayerView extends RelativeLayout implements IPlayerView, Vi
 
     private void initView() {
         mRootView = inflate(getContext(), R.layout.layout_default_player_view, this);
+        mPlayerContainer = (ViewGroup) findViewById(R.id.player_container);
         mTextureView = (TextureView) findViewById(R.id.texture_view);
         mVideoProgressBar = (VideoProgressBar) findViewById(R.id.progress_bar);
         mLoading = (ImageView) findViewById(R.id.img_loading);
@@ -97,8 +102,11 @@ public class DefaultPlayerView extends RelativeLayout implements IPlayerView, Vi
         mPlayBtn = (ImageView) findViewById(R.id.btn_play);
         mLoading.setVisibility(GONE);
 
+        mPlayerView = (RelativeLayout) findViewById(R.id.video_player_view);
+
         mFullScreenBtn = (ImageView) findViewById(R.id.btn_full_screen);
         mFullScreenBtn.setOnClickListener(this);
+        mFullScreenBtn.setImageResource(R.drawable.icon_full_screen);
     }
 
 
@@ -108,13 +116,19 @@ public class DefaultPlayerView extends RelativeLayout implements IPlayerView, Vi
     }
 
     @Override
-    public ViewGroup getVideoContainer() {
-        return (ViewGroup) mRootView;
+    public ViewGroup getPlayerView() {
+        return mPlayerView;
     }
+
 
     @Override
     public View getProgressBar() {
         return mVideoProgressBar;
+    }
+
+    @Override
+    public ViewGroup getPlayerViewContainer() {
+        return mPlayerContainer;
     }
 
     @Override
@@ -147,6 +161,7 @@ public class DefaultPlayerView extends RelativeLayout implements IPlayerView, Vi
     @Override
     public void onFullScreenMode() {
         mIsFullScreen = true;
+        mFullScreenBtn.setImageResource(R.drawable.icon_normal_screen);
         if (mVideoControlListener != null) {
             mVideoControlListener.onEnterFullScreenMode();
         }
@@ -155,6 +170,7 @@ public class DefaultPlayerView extends RelativeLayout implements IPlayerView, Vi
     @Override
     public void onQuitFullScreenMode() {
         mIsFullScreen = false;
+        mFullScreenBtn.setImageResource(R.drawable.icon_full_screen);
         if (mVideoControlListener != null) {
             mVideoControlListener.onQuitFullScreenMode();
         }
