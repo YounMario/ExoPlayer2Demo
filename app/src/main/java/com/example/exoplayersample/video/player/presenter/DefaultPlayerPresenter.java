@@ -2,6 +2,7 @@ package com.example.exoplayersample.video.player.presenter;
 
 import android.content.Context;
 import android.graphics.SurfaceTexture;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Surface;
 import android.view.SurfaceHolder;
@@ -15,7 +16,6 @@ import com.example.exoplayersample.R;
 import com.example.exoplayersample.video.player.listener.VideoControlListener;
 import com.example.exoplayersample.video.utils.ContextUtil;
 import com.example.exoplayersample.video.utils.TimeUtils;
-import com.example.exoplayersample.video.widget.VideoProgressBar;
 import com.younchen.myexoplayer.player.Player;
 import com.younchen.myexoplayer.player.listener.PlayerListener;
 
@@ -43,6 +43,8 @@ public class DefaultPlayerPresenter implements PlayerPresenter, TextureView.Surf
     private int mCurrentState;
     private Context mContext;
 
+    private Handler mUiHandler;
+
     public DefaultPlayerPresenter(Context context, Player player, IPlayerView playerView) {
         mPlayer = player;
         mPlayerView = playerView;
@@ -63,23 +65,13 @@ public class DefaultPlayerPresenter implements PlayerPresenter, TextureView.Surf
 
     private void initData() {
         setCurrentState(STATE_NORMAL);
+        mUiHandler = new Handler();
     }
 
     private void setEventListener() {
         setDisPlayListener();
         setStateListener();
         setControlListener();
-        setupProgressBar();
-    }
-
-    private void setupProgressBar() {
-        View progressBar = mPlayerView.getProgressBar();
-        //here exoplayer not presented callback for progress
-        //so get player current progress on custom view onDraw function
-        if (progressBar instanceof VideoProgressBar) {
-            VideoProgressBar videoProgressBar = (VideoProgressBar) progressBar;
-            videoProgressBar.setController(mPlayer);
-        }
     }
 
     private void setControlListener() {
@@ -110,12 +102,6 @@ public class DefaultPlayerPresenter implements PlayerPresenter, TextureView.Surf
             public void onSeek(int progress) {
                 long seekTime = (long) (progress * 1.0 * mPlayer.getDuration() / 100);
                 mPlayer.seekTo(seekTime);
-            }
-
-            @Override
-            public void onProgress(int progress) {
-                //not good solution .
-                mPlayerView.onTimeChanged(TimeUtils.timeToString((long) mPlayer.getCurrentPosition()), TimeUtils.timeToString(mPlayer.getDuration()));
             }
 
             @Override
@@ -188,6 +174,7 @@ public class DefaultPlayerPresenter implements PlayerPresenter, TextureView.Surf
             public void onPlayEnd() {
                 Log.d(TAG, "onPlayEnd");
                 setCurrentState(STATE_NORMAL);
+                mPlayerView.onEndPlay();
             }
 
             @Override
@@ -195,17 +182,13 @@ public class DefaultPlayerPresenter implements PlayerPresenter, TextureView.Surf
                 Log.d(TAG, "onStartPlay");
                 mPlayerView.onStartPlay();
                 setCurrentState(STATE_PLAY);
+                updateProgress();
             }
 
             @Override
             public void onError(Exception error) {
                 Log.d(TAG, "onError :" + error.getMessage());
                 mPlayerView.onError();
-            }
-
-            @Override
-            public void onPreparing() {
-                Log.d(TAG, "onPreparing");
             }
 
             @Override
@@ -334,4 +317,33 @@ public class DefaultPlayerPresenter implements PlayerPresenter, TextureView.Surf
     }
 
     //============================== for surface view==============================
+
+    private Runnable mUpdateProgressAction = new UpdateProgress();
+
+    //update Progress action
+    private void updateProgress() {
+        if (mPlayerView == null || mPlayer == null) {
+            return;
+        }
+        mUiHandler.removeCallbacks(mUpdateProgressAction);
+        if(mPlayer.isPlaying()){
+            long duration = mPlayer.getDuration();
+            long position = mPlayer.getCurrentPosition();
+            long bufferPercentage = mPlayer.getBufferedPercentage();
+            long playPercentage = (long) (position * 1.0 * 100 / duration);
+            mPlayerView.onTimeChanged(TimeUtils.timeToString(position), TimeUtils.timeToString(duration));
+            mPlayerView.onBufferChanged((int) bufferPercentage);
+            mPlayerView.onProgressChanged((int) playPercentage);
+            mUiHandler.postDelayed(mUpdateProgressAction, 500);
+        }
+    }
+
+    private class UpdateProgress implements Runnable {
+
+        @Override
+        public void run() {
+            updateProgress();
+        }
+    }
+
 }

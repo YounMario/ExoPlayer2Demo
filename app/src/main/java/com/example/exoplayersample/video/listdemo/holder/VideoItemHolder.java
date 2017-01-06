@@ -183,11 +183,6 @@ public class VideoItemHolder extends RecyclerView.ViewHolder implements Playable
 
 
     @Override
-    public View getProgressBar() {
-        return null;
-    }
-
-    @Override
     public ViewGroup getPlayerViewContainer() {
         return null;
     }
@@ -218,17 +213,23 @@ public class VideoItemHolder extends RecyclerView.ViewHolder implements Playable
     }
 
     @Override
+    public void onEndPlay() {
+
+    }
+
+    @Override
     public void onTimeChanged(String playTime, String totalTime) {
 
     }
 
     @Override
-    public void onFullScreenMode() {
+    public void onBufferChanged(int currentBuffer) {
 
     }
 
+
     @Override
-    public void onQuitFullScreenMode() {
+    public void onProgressChanged(int progress) {
 
     }
 

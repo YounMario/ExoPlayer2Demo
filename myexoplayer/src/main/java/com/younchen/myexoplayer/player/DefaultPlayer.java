@@ -106,7 +106,7 @@ public class DefaultPlayer implements Player, ExoPlayer.EventListener {
     }
 
     @Override
-    public float getCurrentPosition() {
+    public long getCurrentPosition() {
         return simpleExoPlayer.getCurrentPosition();
     }
 

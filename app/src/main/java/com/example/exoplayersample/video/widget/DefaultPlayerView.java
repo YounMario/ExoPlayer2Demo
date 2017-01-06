@@ -3,16 +3,17 @@ package com.example.exoplayersample.video.widget;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.example.exoplayersample.R;
-import com.example.exoplayersample.video.listdemo.anim.AnimationUtils;
 import com.example.exoplayersample.video.player.listener.VideoControlListener;
 import com.example.exoplayersample.video.player.presenter.IPlayerView;
 import com.example.exoplayersample.video.utils.TimeUtils;
@@ -25,22 +26,22 @@ public class DefaultPlayerView extends RelativeLayout implements IPlayerView, Vi
 
     private View mRootView;
     private TextureView mTextureView;
-    private VideoProgressBar mVideoProgressBar;
+    private SeekBar mVideoProgressBar;
 
     private TextView mPlayTime;
     private TextView mEndTime;
 
     private ImageView mPlayBtn;
-    private ImageView mLoading;
+    private ProgressBar mLoadingBar;
     private ImageView mFullScreenBtn;
 
     private VideoControlListener mVideoControlListener;
-    private ObjectAnimator mRotateAnimation;
 
     private boolean mIsFullScreen;
     private ViewGroup mPlayerContainer;
     private ViewGroup mPlayerView;
 
+    private static final String TAG = "DefaultPlayerView";
 
     public DefaultPlayerView(Context context) {
         this(context, null);
@@ -62,36 +63,41 @@ public class DefaultPlayerView extends RelativeLayout implements IPlayerView, Vi
     }
 
     private void initEvent() {
-        mVideoProgressBar.setProgressListener(new VideoProgressBar.ProgressListener() {
-            @Override
-            public void updateProgress(int progress) {
-                mVideoControlListener.onProgress(progress);
-            }
-        });
-
-        mVideoProgressBar.setSeekListener(new VideoProgressBar.SeekListener() {
-            @Override
-            public void onSeek(int progress) {
-                mVideoControlListener.onSeek(progress);
-            }
-        });
-
         mPlayBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                mVideoControlListener.onPlayClicked();
+                if(mVideoControlListener != null){
+                    mVideoControlListener.onPlayClicked();
+                }
             }
         });
-
-
     }
 
     private void initView() {
         mRootView = inflate(getContext(), R.layout.layout_default_player_view, this);
         mPlayerContainer = (ViewGroup) findViewById(R.id.player_container);
         mTextureView = (TextureView) findViewById(R.id.texture_view);
-        mVideoProgressBar = (VideoProgressBar) findViewById(R.id.progress_bar);
-        mLoading = (ImageView) findViewById(R.id.img_loading);
+        mVideoProgressBar = (SeekBar) findViewById(R.id.progress_bar);
+        mVideoProgressBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                if (mVideoControlListener != null) {
+                    Log.d(TAG, " on seek");
+                    mVideoControlListener.onSeek(seekBar.getProgress());
+                }
+            }
+        });
+        mLoadingBar = (ProgressBar) findViewById(R.id.loading_progress);
 
         mPlayTime = (TextView) findViewById(R.id.txt_play_time);
         mEndTime = (TextView) findViewById(R.id.txt_end_time);
@@ -100,7 +106,7 @@ public class DefaultPlayerView extends RelativeLayout implements IPlayerView, Vi
         mEndTime.setText(TimeUtils.timeToString(0));
 
         mPlayBtn = (ImageView) findViewById(R.id.btn_play);
-        mLoading.setVisibility(GONE);
+        mLoadingBar.setVisibility(GONE);
 
         mPlayerView = (RelativeLayout) findViewById(R.id.video_player_view);
 
@@ -120,12 +126,6 @@ public class DefaultPlayerView extends RelativeLayout implements IPlayerView, Vi
         return mPlayerView;
     }
 
-
-    @Override
-    public View getProgressBar() {
-        return mVideoProgressBar;
-    }
-
     @Override
     public ViewGroup getPlayerViewContainer() {
         return mPlayerContainer;
@@ -133,12 +133,12 @@ public class DefaultPlayerView extends RelativeLayout implements IPlayerView, Vi
 
     @Override
     public void onBuffering() {
-        startLoading();
+        mLoadingBar.setVisibility(VISIBLE);
     }
 
     @Override
     public void onStartPlay() {
-        stopLoading();
+        mLoadingBar.setVisibility(GONE);
         mPlayBtn.setImageResource(R.drawable.icon_pause);
     }
 
@@ -153,13 +153,22 @@ public class DefaultPlayerView extends RelativeLayout implements IPlayerView, Vi
     }
 
     @Override
+    public void onEndPlay() {
+        mPlayBtn.setImageResource(R.drawable.icon_play);
+    }
+
+    @Override
     public void onTimeChanged(String playTime, String totalTime) {
         mPlayTime.setText(playTime);
         mEndTime.setText(totalTime);
     }
 
     @Override
-    public void onFullScreenMode() {
+    public void onBufferChanged(int currentBuffer) {
+
+    }
+
+    private void onFullScreenMode() {
         mIsFullScreen = true;
         mFullScreenBtn.setImageResource(R.drawable.icon_normal_screen);
         if (mVideoControlListener != null) {
@@ -167,8 +176,7 @@ public class DefaultPlayerView extends RelativeLayout implements IPlayerView, Vi
         }
     }
 
-    @Override
-    public void onQuitFullScreenMode() {
+    private void onQuitFullScreenMode() {
         mIsFullScreen = false;
         mFullScreenBtn.setImageResource(R.drawable.icon_full_screen);
         if (mVideoControlListener != null) {
@@ -177,39 +185,15 @@ public class DefaultPlayerView extends RelativeLayout implements IPlayerView, Vi
     }
 
     @Override
+    public void onProgressChanged(int progress) {
+        mVideoProgressBar.setProgress(progress);
+    }
+
+    @Override
     public void setControlListener(VideoControlListener videoControlListener) {
         mVideoControlListener = videoControlListener;
     }
 
-    private void startLoading() {
-        if (mLoading != null) {
-            mLoading.setVisibility(View.VISIBLE);
-            startRotateAnimation();
-        }
-    }
-
-    private void stopLoading() {
-        if (mLoading != null) {
-            mLoading.setVisibility(View.GONE);
-            stopRotateAnimation();
-        }
-    }
-
-    private void startRotateAnimation() {
-        if (mRotateAnimation != null) {
-            mRotateAnimation.cancel();
-            mRotateAnimation = null;
-        }
-        mRotateAnimation = AnimationUtils.createRotationAnimation(mLoading);
-        mRotateAnimation.start();
-    }
-
-    private void stopRotateAnimation() {
-        if (mRotateAnimation != null) {
-            mRotateAnimation.cancel();
-            mRotateAnimation = null;
-        }
-    }
 
     @Override
     public void onClick(View v) {

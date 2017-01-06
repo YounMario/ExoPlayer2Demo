@@ -4,7 +4,6 @@ import android.net.Uri;
 import android.util.Log;
 import android.view.Surface;
 
-import com.example.exoplayersample.video.listdemo.PlayableWindow;
 import com.younchen.myexoplayer.player.Player;
 import com.younchen.myexoplayer.player.PlayerFactory;
 import com.younchen.myexoplayer.player.listener.PlayerListener;
@@ -47,14 +46,6 @@ public class ExoPlayerWrapper {
             @Override
             public void onError(Exception error) {
 
-            }
-
-            @Override
-            public void onPreparing() {
-                if (currentWindow != null) {
-                    currentWindow.updateUiToPrepare();
-                    currentWindow.showLoading();
-                }
             }
 
             @Override

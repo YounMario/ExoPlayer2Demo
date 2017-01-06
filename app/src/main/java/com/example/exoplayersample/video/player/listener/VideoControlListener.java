@@ -9,8 +9,6 @@ public interface VideoControlListener {
 
     void onSeek(int progress);
 
-    void onProgress(int progress);
-
     void onEnterFullScreenMode();
 
     void onQuitFullScreenMode();

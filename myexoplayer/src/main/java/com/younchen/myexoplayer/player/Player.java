@@ -23,7 +23,7 @@ public interface Player {
 
     long getDuration();
 
-    float getCurrentPosition();
+    long getCurrentPosition();
 
     long getBufferedPercentage();
 
