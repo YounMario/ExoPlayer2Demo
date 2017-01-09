@@ -1,4 +1,4 @@
-package com.example.exoplayersample.video.player.listener;
+package com.younchen.myexoplayer.player.listener;
 
 /**
  * Created by 龙泉 on 2017/1/2 0002.

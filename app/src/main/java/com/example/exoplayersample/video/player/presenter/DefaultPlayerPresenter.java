@@ -13,12 +13,14 @@ import android.view.ViewGroup;
 import android.view.Window;
 
 import com.example.exoplayersample.R;
-import com.example.exoplayersample.video.player.listener.VideoControlListener;
+import com.younchen.myexoplayer.player.listener.VideoControlListener;
 import com.example.exoplayersample.video.utils.ContextUtil;
 import com.example.exoplayersample.video.utils.TimeUtils;
 import com.google.android.exoplayer2.text.Cue;
 import com.younchen.myexoplayer.player.Player;
 import com.younchen.myexoplayer.player.listener.PlayerListener;
+import com.younchen.myexoplayer.player.presenter.PlayerPresenter;
+import com.younchen.myexoplayer.player.view.IPlayerView;
 
 import java.util.List;
 

@@ -1,10 +1,11 @@
-package com.example.exoplayersample.video.player.presenter;
+package com.younchen.myexoplayer.player.view;
 
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.exoplayersample.video.player.listener.VideoControlListener;
 import com.google.android.exoplayer2.text.Cue;
+import com.younchen.myexoplayer.player.listener.PlayerCallBack;
+import com.younchen.myexoplayer.player.listener.VideoControlListener;
 
 import java.util.List;
 
@@ -12,7 +13,7 @@ import java.util.List;
  * Created by 龙泉 on 2017/1/2 0002.
  */
 
-public interface IPlayerView extends IPlayerListener {
+public interface IPlayerView extends PlayerCallBack {
 
     View getVideoView();
 

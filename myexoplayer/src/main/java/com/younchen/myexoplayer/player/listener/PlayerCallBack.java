@@ -1,9 +1,9 @@
-package com.example.exoplayersample.video.player.presenter;
+package com.younchen.myexoplayer.player.listener;
 
 /**
  * Created by 龙泉 on 2017/1/6.
  */
-public interface IPlayerListener {
+public interface PlayerCallBack {
 
     void onBuffering();
 

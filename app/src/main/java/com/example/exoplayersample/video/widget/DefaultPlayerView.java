@@ -13,10 +13,10 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.example.exoplayersample.R;
-import com.example.exoplayersample.video.player.listener.VideoControlListener;
-import com.example.exoplayersample.video.player.presenter.IPlayerView;
+import com.younchen.myexoplayer.player.listener.VideoControlListener;
 import com.example.exoplayersample.video.utils.TimeUtils;
 import com.google.android.exoplayer2.text.Cue;
+import com.younchen.myexoplayer.player.view.IPlayerView;
 
 import java.util.List;
 

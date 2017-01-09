@@ -8,7 +8,7 @@ import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
 import com.example.exoplayersample.R;
-import com.example.exoplayersample.video.player.presenter.PlayerPresenter;
+import com.younchen.myexoplayer.player.presenter.PlayerPresenter;
 
 /**
  * Created by 龙泉 on 2016/12/29.

@@ -5,9 +5,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.example.exoplayersample.video.player.presenter.DefaultPlayerPresenter;
-import com.example.exoplayersample.video.player.presenter.IPlayerView;
 import com.younchen.myexoplayer.player.Player;
 import com.younchen.myexoplayer.player.PlayerFactory;
+import com.younchen.myexoplayer.player.view.IPlayerView;
 
 
 public class ExoPlayerSample extends AppCompatActivity  {

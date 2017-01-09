@@ -1,9 +1,7 @@
-package com.example.exoplayersample.video.player.presenter;
-
-import android.view.View;
-import android.view.ViewGroup;
+package com.younchen.myexoplayer.player.presenter;
 
 import com.younchen.myexoplayer.player.Player;
+import com.younchen.myexoplayer.player.view.IPlayerView;
 
 /**
  * Created by 龙泉 on 2016/12/29.

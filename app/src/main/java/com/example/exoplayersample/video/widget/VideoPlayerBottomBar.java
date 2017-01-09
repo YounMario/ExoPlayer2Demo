@@ -12,10 +12,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.exoplayersample.R;
-import com.example.exoplayersample.video.player.presenter.PlayerPresenter;
 import com.example.exoplayersample.video.utils.ContextUtil;
 import com.example.exoplayersample.video.utils.TimeUtils;
 import com.younchen.myexoplayer.player.Player;
+import com.younchen.myexoplayer.player.presenter.PlayerPresenter;
 
 import java.lang.ref.WeakReference;
 

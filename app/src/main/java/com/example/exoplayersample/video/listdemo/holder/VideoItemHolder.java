@@ -19,14 +19,14 @@ import com.example.exoplayersample.video.listdemo.bean.VideoInfo;
 import com.example.exoplayersample.video.listdemo.ExoPlayerWrapper;
 import com.example.exoplayersample.video.listdemo.PlayableWindow;
 import com.example.exoplayersample.video.listdemo.manager.VideoPlayManager;
-import com.example.exoplayersample.video.player.listener.VideoControlListener;
+import com.younchen.myexoplayer.player.listener.VideoControlListener;
 import com.example.exoplayersample.video.player.presenter.DefaultPlayerPresenter;
-import com.example.exoplayersample.video.player.presenter.PlayerPresenter;
 import com.example.exoplayersample.video.utils.ThreadUtils;
 import com.example.exoplayersample.video.utils.ViewUtils;
 import com.example.exoplayersample.video.widget.VideoPlayerBottomBar;
 import com.google.android.exoplayer2.text.Cue;
 import com.squareup.picasso.Picasso;
+import com.younchen.myexoplayer.player.presenter.PlayerPresenter;
 
 import java.util.List;
 
