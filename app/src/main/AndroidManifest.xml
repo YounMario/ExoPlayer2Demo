@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".ExoPlayerSample"
-            android:configChanges="keyboardHidden|orientation">
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

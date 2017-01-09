@@ -131,6 +131,7 @@ public class DefaultPlayerView extends RelativeLayout implements IPlayerView, Vi
         mRewindBtn.setOnClickListener(this);
 
         mVideoViewContainer = (AspectRatioFrameLayout) findViewById(R.id.video_view_container);
+        mVideoViewContainer.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIXED_WIDTH);
     }
 
 
@@ -222,7 +223,10 @@ public class DefaultPlayerView extends RelativeLayout implements IPlayerView, Vi
 
     @Override
     public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
-        mVideoViewContainer.setAspectRatio(width * 1.0f / height);
+        if (mVideoViewContainer != null) {
+            float aspectRatio = height == 0 ? 1 : (width * pixelWidthHeightRatio) / height;
+            mVideoViewContainer.setAspectRatio(aspectRatio);
+        }
     }
 
 
