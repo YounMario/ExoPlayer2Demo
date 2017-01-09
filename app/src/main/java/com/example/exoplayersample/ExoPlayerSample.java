@@ -15,8 +15,6 @@ public class ExoPlayerSample extends AppCompatActivity  {
     private Player mPlayer;
     private static final String TAG = "ExoPlayerSample";
 
-    private static String PLAY_URL2 = "http://2449.vod.myqcloud.com/2449_22ca37a6ea9011e5acaaf51d105342e3.f20.mp4";
-
     private DefaultPlayerPresenter mDefaultPresenter;
     private IPlayerView mPlayerView;
 
@@ -31,11 +29,6 @@ public class ExoPlayerSample extends AppCompatActivity  {
         mDefaultPresenter.getPlayer().setVideoUri(Uri.parse("/android_asset/video_demo.mp4"))
                 .setSubTitleUri(Uri.parse("/android_asset/demo_subtitle.srt"));
     }
-
-    private String getVideoPlayPath() {
-        return PLAY_URL2;
-    }
-
 
     @Override
     protected void onDestroy() {

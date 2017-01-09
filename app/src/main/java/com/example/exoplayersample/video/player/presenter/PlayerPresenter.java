@@ -13,15 +13,11 @@ public interface PlayerPresenter {
 
     void setPlayer(Player player);
 
-    void setPlayerView(IPlayerView view);
-
     IPlayerView getPlayerView();
 
     Player getPlayer();
 
     void saveCurrentPlayerParent();
-
-    void restoreLastParentView();
 
     void release();
 }

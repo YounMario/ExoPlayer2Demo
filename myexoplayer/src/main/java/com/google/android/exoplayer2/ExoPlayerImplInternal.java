@@ -1560,11 +1560,11 @@ import java.io.IOException;
       }
     } else {
       this.speed = speed;
-      standaloneMediaClock.setPlaybackSpeed(speed);
       if (rendererMediaClock != null) {
         rendererMediaClock.setPlaybackSpeed(speed);
       }
     }
+    standaloneMediaClock.setPlaybackSpeed(speed);
   }
 
   private void maybeUpdatePlaybackSpeed(ExoPlayerMessage msg) {

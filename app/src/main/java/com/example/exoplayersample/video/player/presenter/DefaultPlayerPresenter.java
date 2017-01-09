@@ -247,10 +247,6 @@ public class DefaultPlayerPresenter implements PlayerPresenter, TextureView.Surf
         mPlayer = player;
     }
 
-    @Override
-    public void setPlayerView(IPlayerView view) {
-        mPlayerView = view;
-    }
 
     @Override
     public IPlayerView getPlayerView() {
@@ -270,17 +266,6 @@ public class DefaultPlayerPresenter implements PlayerPresenter, TextureView.Surf
                 mLastViewParams = parent.getLayoutParams();
                 mLastParent = parent;
             }
-        }
-    }
-
-    @Override
-    public void restoreLastParentView() {
-        if (mPlayer != null && mLastParent != null) {
-            ViewGroup viewParent = (ViewGroup) mPlayerView.getVideoView().getParent();
-            if (viewParent != null) {
-                viewParent.removeView(mPlayerView.getVideoView());
-            }
-            mLastParent.addView(mPlayerView.getVideoView(), mLastViewParams);
         }
     }
 
