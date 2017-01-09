@@ -14,7 +14,6 @@ import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.LoadControl;
-import com.google.android.exoplayer2.Renderer;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
@@ -35,7 +34,6 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
-import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.BandwidthMeter;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
@@ -107,13 +105,15 @@ public class DefaultPlayer implements Player, ExoPlayer.EventListener , TextRend
     }
 
     @Override
-    public void setPlaySpeed(int value) {
-
+    public void setPlaySpeed(float value) {
+        if (simpleExoPlayer != null) {
+            simpleExoPlayer.setPlaybackSpeed(value);
+        }
     }
 
     @Override
-    public int getPlaySpeed() {
-        return 0;
+    public float getPlaySpeed() {
+        return simpleExoPlayer == null ? 1.0f : simpleExoPlayer.getPlaybackSpeed();
     }
 
     @Override
@@ -183,6 +183,7 @@ public class DefaultPlayer implements Player, ExoPlayer.EventListener , TextRend
         simpleExoPlayer = getPlayerInstance();
         simpleExoPlayer.addListener(this);
         simpleExoPlayer.setVideoSurface(mSurface);
+        simpleExoPlayer.setPlaybackSpeed(1.0f);
         simpleExoPlayer.prepare(buildMediaSource(mVideoUri));
         simpleExoPlayer.setTextOutput(this);
     }

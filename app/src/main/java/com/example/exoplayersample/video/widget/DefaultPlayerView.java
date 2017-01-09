@@ -45,6 +45,8 @@ public class DefaultPlayerView extends RelativeLayout implements IPlayerView, Vi
 
     private TextView mSubtitleView;
 
+    private ImageView mFastForwardBtn;
+    private ImageView mRewindBtn;
 
     private static final String TAG = "DefaultPlayerView";
 
@@ -120,6 +122,12 @@ public class DefaultPlayerView extends RelativeLayout implements IPlayerView, Vi
         mFullScreenBtn.setImageResource(R.drawable.icon_full_screen);
 
         mSubtitleView = (TextView) findViewById(R.id.subtitle_view);
+        mFastForwardBtn = (ImageView) findViewById(R.id.btn_fast_forward);
+        mRewindBtn = (ImageView) findViewById(R.id.btn_rewind);
+
+        mFastForwardBtn.setOnClickListener(this);
+        mRewindBtn.setOnClickListener(this);
+
     }
 
 
@@ -146,7 +154,7 @@ public class DefaultPlayerView extends RelativeLayout implements IPlayerView, Vi
     @Override
     public void onStartPlay() {
         mLoadingBar.setVisibility(GONE);
-        mPlayBtn.setImageResource(R.drawable.icon_pause);
+        mPlayBtn.setImageResource(R.drawable.exo_controls_pause);
     }
 
     @Override
@@ -156,12 +164,12 @@ public class DefaultPlayerView extends RelativeLayout implements IPlayerView, Vi
 
     @Override
     public void onPausePlay() {
-        mPlayBtn.setImageResource(R.drawable.icon_play);
+        mPlayBtn.setImageResource(R.drawable.exo_controls_play);
     }
 
     @Override
     public void onEndPlay() {
-        mPlayBtn.setImageResource(R.drawable.icon_play);
+        mPlayBtn.setImageResource(R.drawable.exo_controls_play);
     }
 
     @Override
@@ -218,6 +226,16 @@ public class DefaultPlayerView extends RelativeLayout implements IPlayerView, Vi
                     onQuitFullScreenMode();
                 } else {
                     onFullScreenMode();
+                }
+                break;
+            case R.id.btn_fast_forward:
+                if(mVideoControlListener!= null){
+                    mVideoControlListener.onSpeedUp();
+                }
+                break;
+            case R.id.btn_rewind:
+                if(mVideoControlListener!= null){
+                    mVideoControlListener.onSpeedDown();
                 }
                 break;
         }

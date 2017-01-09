@@ -48,6 +48,11 @@ public class DefaultPlayerPresenter implements PlayerPresenter, TextureView.Surf
 
     private Handler mUiHandler;
 
+    private static final float MAX_SPEED = 4.0f;
+    private static final float MIN_SPEED = 0.25f;
+    private static final float SPEED_INCREASE = 0.25f;
+
+
     public DefaultPlayerPresenter(Context context, Player player, IPlayerView playerView) {
         mPlayer = player;
         mPlayerView = playerView;
@@ -116,6 +121,22 @@ public class DefaultPlayerPresenter implements PlayerPresenter, TextureView.Surf
             @Override
             public void onQuitFullScreenMode() {
                 changeToNormalScreenMode();
+            }
+
+            @Override
+            public void onSpeedUp() {
+                Log.d(TAG, "speed up:" + mPlayer.getPlaySpeed());
+                if (mPlayer.getPlaySpeed() + SPEED_INCREASE <= MAX_SPEED) {
+                    mPlayer.setPlaySpeed(mPlayer.getPlaySpeed() + SPEED_INCREASE);
+                }
+            }
+
+            @Override
+            public void onSpeedDown() {
+                Log.d(TAG, "speed down :" + mPlayer.getPlaySpeed());
+                if (mPlayer.getPlaySpeed() - SPEED_INCREASE >= MIN_SPEED) {
+                    mPlayer.setPlaySpeed(mPlayer.getPlaySpeed() - SPEED_INCREASE);
+                }
             }
         });
     }

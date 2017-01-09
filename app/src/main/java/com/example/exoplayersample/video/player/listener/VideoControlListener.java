@@ -12,4 +12,8 @@ public interface VideoControlListener {
     void onEnterFullScreenMode();
 
     void onQuitFullScreenMode();
+
+    void onSpeedUp();
+
+    void onSpeedDown();
 }

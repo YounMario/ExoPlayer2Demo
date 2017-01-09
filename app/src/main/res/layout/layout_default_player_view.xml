@@ -43,6 +43,15 @@
 
         </FrameLayout>
 
+        <TextView
+            android:id="@+id/txt_speed_info"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:textColor="@color/white"
+            android:textSize="16dp"
+            android:textStyle="bold" />
 
         <LinearLayout
             android:id="@+id/control_panel"
@@ -92,6 +101,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+                <ImageView
+                    android:id="@+id/btn_rewind"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="8dp"
+                    android:layout_toLeftOf="@+id/btn_play"
+                    android:src="@drawable/exo_controls_rewind"/>
+
 
                 <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/btn_play"
@@ -99,7 +116,16 @@
                     android:layout_height="40dp"
                     android:layout_centerInParent="true"
                     android:layout_margin="8dp"
-                    android:src="@drawable/icon_play" />
+                    android:src="@drawable/exo_controls_play" />
+
+                <ImageView
+                    android:id="@+id/btn_fast_forward"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="8dp"
+                    android:layout_toRightOf="@+id/btn_play"
+                    android:src="@drawable/exo_controls_fastforward"/>
+
 
                 <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/btn_full_screen"

@@ -19,9 +19,9 @@ public interface Player {
 
     Player setSubTitleUri(Uri subTitleUri);
 
-    void setPlaySpeed(int value);
+    void setPlaySpeed(float value);
 
-    int getPlaySpeed();
+    float getPlaySpeed();
 
     void release();
 
