@@ -31,11 +31,15 @@
                 android:indeterminateTintMode="src_atop" />
 
 
-            <com.google.android.exoplayer2.ui.SubtitleView
+            <TextView
                 android:id="@+id/subtitle_view"
                 android:layout_gravity="bottom"
                 android:layout_width="match_parent"
-                android:layout_height="80dp" />
+                android:gravity="center"
+                android:textColor="@color/light_black"
+                android:textSize="16dp"
+                android:textStyle="bold"
+                android:layout_height="60dp" />
 
         </FrameLayout>
 

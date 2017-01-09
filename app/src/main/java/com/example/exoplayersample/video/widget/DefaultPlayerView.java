@@ -17,7 +17,6 @@ import com.example.exoplayersample.video.player.listener.VideoControlListener;
 import com.example.exoplayersample.video.player.presenter.IPlayerView;
 import com.example.exoplayersample.video.utils.TimeUtils;
 import com.google.android.exoplayer2.text.Cue;
-import com.google.android.exoplayer2.ui.SubtitleView;
 
 import java.util.List;
 
@@ -44,7 +43,8 @@ public class DefaultPlayerView extends RelativeLayout implements IPlayerView, Vi
     private ViewGroup mPlayerContainer;
     private ViewGroup mPlayerView;
 
-    private SubtitleView mSubtitleView;
+    private TextView mSubtitleView;
+
 
     private static final String TAG = "DefaultPlayerView";
 
@@ -119,7 +119,7 @@ public class DefaultPlayerView extends RelativeLayout implements IPlayerView, Vi
         mFullScreenBtn.setOnClickListener(this);
         mFullScreenBtn.setImageResource(R.drawable.icon_full_screen);
 
-        mSubtitleView = (SubtitleView) findViewById(R.id.subtitle_view);
+        mSubtitleView = (TextView) findViewById(R.id.subtitle_view);
     }
 
 
@@ -202,7 +202,11 @@ public class DefaultPlayerView extends RelativeLayout implements IPlayerView, Vi
 
     @Override
     public void onReceiveSubtitle(List<Cue> cues) {
-        mSubtitleView.setCues(cues);
+        StringBuilder sb = new StringBuilder();
+        for (Cue cue : cues) {
+            sb.append(cue.text);
+        }
+        mSubtitleView.setText(sb.toString());
     }
 
 
