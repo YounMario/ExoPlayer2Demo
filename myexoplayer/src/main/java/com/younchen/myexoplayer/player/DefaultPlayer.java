@@ -107,6 +107,16 @@ public class DefaultPlayer implements Player, ExoPlayer.EventListener , TextRend
     }
 
     @Override
+    public void setPlaySpeed(int value) {
+
+    }
+
+    @Override
+    public int getPlaySpeed() {
+        return 0;
+    }
+
+    @Override
     public void release() {
         if (simpleExoPlayer != null) {
             simpleExoPlayer.release();
