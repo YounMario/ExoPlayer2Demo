@@ -11,10 +11,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <FrameLayout
+        <com.google.android.exoplayer2.ui.AspectRatioFrameLayout
             android:id="@+id/video_view_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_above="@+id/control_panel">
 
             <TextureView
@@ -41,7 +41,7 @@
                 android:textStyle="bold"
                 android:layout_height="60dp" />
 
-        </FrameLayout>
+        </com.google.android.exoplayer2.ui.AspectRatioFrameLayout>
 
         <TextView
             android:id="@+id/txt_speed_info"

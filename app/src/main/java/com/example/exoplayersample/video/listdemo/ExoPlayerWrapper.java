@@ -60,6 +60,11 @@ public class ExoPlayerWrapper {
             public void onSubtitleOutput(List<Cue> cues) {
 
             }
+
+            @Override
+            public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
+
+            }
         });
     }
 

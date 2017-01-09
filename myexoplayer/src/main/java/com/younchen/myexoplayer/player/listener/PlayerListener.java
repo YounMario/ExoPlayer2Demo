@@ -23,4 +23,5 @@ public interface PlayerListener {
 
     void onSubtitleOutput(List<Cue> cues);
 
+    void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio);
 }

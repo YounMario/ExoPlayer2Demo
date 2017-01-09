@@ -55,7 +55,7 @@ import okhttp3.OkHttpClient;
 /**
  * Created by 龙泉 on 2016/12/26.
  */
-public class DefaultPlayer implements Player, ExoPlayer.EventListener , TextRenderer.Output{
+public class DefaultPlayer implements Player, ExoPlayer.EventListener , TextRenderer.Output, SimpleExoPlayer.VideoListener {
 
     private SimpleExoPlayer simpleExoPlayer;
     private String mUserAgent;
@@ -186,6 +186,7 @@ public class DefaultPlayer implements Player, ExoPlayer.EventListener , TextRend
         simpleExoPlayer.setPlaybackSpeed(1.0f);
         simpleExoPlayer.prepare(buildMediaSource(mVideoUri));
         simpleExoPlayer.setTextOutput(this);
+        simpleExoPlayer.setVideoListener(this);
     }
 
     private MediaSource buildMediaSource(Uri uri) {
@@ -328,5 +329,18 @@ public class DefaultPlayer implements Player, ExoPlayer.EventListener , TextRend
         if (mListener != null) {
             mListener.onSubtitleOutput(cues);
         }
+    }
+
+    @Override
+    public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
+        Log.d("Youn", "texture view sizeChanged w:" + width + " h :" + height + " degree :" + unappliedRotationDegrees + " ratio:" + pixelWidthHeightRatio);
+        if (mListener != null) {
+            mListener.onVideoSizeChanged(width, height, unappliedRotationDegrees, pixelWidthHeightRatio);
+        }
+    }
+
+    @Override
+    public void onRenderedFirstFrame() {
+
     }
 }

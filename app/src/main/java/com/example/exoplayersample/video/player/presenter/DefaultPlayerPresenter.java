@@ -229,6 +229,11 @@ public class DefaultPlayerPresenter implements PlayerPresenter, TextureView.Surf
             public void onSubtitleOutput(List<Cue> cues) {
                 mPlayerView.onReceiveSubtitle(cues);
             }
+
+            @Override
+            public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
+                mPlayerView.onVideoSizeChanged(width, height, unappliedRotationDegrees, pixelWidthHeightRatio);
+            }
         });
     }
 
@@ -271,6 +276,7 @@ public class DefaultPlayerPresenter implements PlayerPresenter, TextureView.Surf
     //============================== for texture view==============================
     @Override
     public void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture, int i, int i1) {
+        Log.i(TAG, "width:" + i + " height:" + i1);
         if (mSurface == null) {
             mSurface = new Surface(surfaceTexture);
             mPlayer.setSurface(mSurface);
@@ -280,7 +286,7 @@ public class DefaultPlayerPresenter implements PlayerPresenter, TextureView.Surf
 
     @Override
     public void onSurfaceTextureSizeChanged(SurfaceTexture surfaceTexture, int i, int i1) {
-
+        Log.i(TAG, "changed width:" + i + " height:" + i1);
     }
 
     @Override

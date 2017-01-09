@@ -216,6 +216,11 @@ public class VideoItemHolder extends RecyclerView.ViewHolder implements Playable
     }
 
     @Override
+    public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
+
+    }
+
+    @Override
     public void onPausePlay() {
 
     }

@@ -13,6 +13,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.example.exoplayersample.R;
+import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.younchen.myexoplayer.player.listener.VideoControlListener;
 import com.example.exoplayersample.video.utils.TimeUtils;
 import com.google.android.exoplayer2.text.Cue;
@@ -47,6 +48,7 @@ public class DefaultPlayerView extends RelativeLayout implements IPlayerView, Vi
 
     private ImageView mFastForwardBtn;
     private ImageView mRewindBtn;
+    private AspectRatioFrameLayout mVideoViewContainer;
 
     private static final String TAG = "DefaultPlayerView";
 
@@ -128,6 +130,7 @@ public class DefaultPlayerView extends RelativeLayout implements IPlayerView, Vi
         mFastForwardBtn.setOnClickListener(this);
         mRewindBtn.setOnClickListener(this);
 
+        mVideoViewContainer = (AspectRatioFrameLayout) findViewById(R.id.video_view_container);
     }
 
 
@@ -215,6 +218,11 @@ public class DefaultPlayerView extends RelativeLayout implements IPlayerView, Vi
             sb.append(cue.text);
         }
         mSubtitleView.setText(sb.toString());
+    }
+
+    @Override
+    public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
+        mVideoViewContainer.setAspectRatio(width * 1.0f / height);
     }
 
 

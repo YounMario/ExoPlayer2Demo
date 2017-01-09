@@ -24,4 +24,6 @@ public interface IPlayerView extends PlayerCallBack {
     void setControlListener(VideoControlListener videoControlListener);
 
     void onReceiveSubtitle(List<Cue> cues);
+
+    void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio);
 }
