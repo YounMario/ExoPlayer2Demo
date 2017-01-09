@@ -258,16 +258,6 @@ public class DefaultPlayerPresenter implements PlayerPresenter, TextureView.Surf
         return mPlayer;
     }
 
-    @Override
-    public void saveCurrentPlayerParent() {
-        if (mPlayerView != null) {
-            ViewGroup parent = (ViewGroup) mPlayerView.getVideoView().getParent();
-            if (parent != null) {
-                mLastViewParams = parent.getLayoutParams();
-                mLastParent = parent;
-            }
-        }
-    }
 
     @Override
     public void release() {

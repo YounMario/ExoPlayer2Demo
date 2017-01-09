@@ -168,7 +168,6 @@ public class VideoPlayerBottomBar extends RelativeLayout implements View.OnClick
         PlayerPresenter playerPresenter = mPlayerReference.get();
         Player player = playerPresenter.getPlayer();
 
-        playerPresenter.saveCurrentPlayerParent();
 
         fullScreenPlayerView.setPlayerPresenter(playerPresenter);
         rootView.addView(fullScreenPlayerView, lp);

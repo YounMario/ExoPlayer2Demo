@@ -17,7 +17,5 @@ public interface PlayerPresenter {
 
     Player getPlayer();
 
-    void saveCurrentPlayerParent();
-
     void release();
 }
