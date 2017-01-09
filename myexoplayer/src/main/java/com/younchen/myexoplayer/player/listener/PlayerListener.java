@@ -6,6 +6,7 @@ import java.util.List;
 
 /**
  * Created by 龙泉 on 2016/12/27.
+ * used to pass player event to player owner
  */
 
 public interface PlayerListener {
