@@ -1,6 +1,7 @@
 package com.example.exoplayersample.video.player.presenter;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.SurfaceTexture;
 import android.os.Handler;
 import android.util.Log;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 
 import com.example.exoplayersample.R;
+import com.example.exoplayersample.video.utils.SystemUiUtils;
 import com.younchen.myexoplayer.player.listener.VideoControlListener;
 import com.example.exoplayersample.video.utils.ContextUtil;
 import com.example.exoplayersample.video.utils.TimeUtils;
@@ -40,9 +42,6 @@ public class DefaultPlayerPresenter implements PlayerPresenter, TextureView.Surf
     private Player mPlayer;
     private IPlayerView mPlayerView;
 
-    private ViewGroup mLastParent;
-    private ViewGroup.LayoutParams mLastViewParams;
-
     private Surface mSurface;
 
     private int mCurrentState;
@@ -60,8 +59,14 @@ public class DefaultPlayerPresenter implements PlayerPresenter, TextureView.Surf
         mPlayerView = playerView;
         mContext = context;
         checkPlayer();
+        initView();
         initData();
         setEventListener();
+    }
+
+    private void initView() {
+        setTransParentBar();
+        hideSystemUI();
     }
 
     private void checkPlayer() {
@@ -140,9 +145,34 @@ public class DefaultPlayerPresenter implements PlayerPresenter, TextureView.Surf
                     mPlayer.setPlaySpeed(mPlayer.getPlaySpeed() - SPEED_INCREASE);
                 }
             }
+
+            @Override
+            public void onFocusChanged(boolean hasFocus) {
+                if (hasFocus) {
+                    showSystemUI();
+                } else {
+                    hideSystemUI();
+                }
+            }
         });
     }
+    //===================================transparent navigation bar===========================
+    private void setTransParentBar(){
+        SystemUiUtils.setTransParentBar(mContext);
+    }
+    //===================================transparent navigation bar===========================
 
+    //===================================hide system ui===============================================================
+    private void hideSystemUI() {
+        SystemUiUtils.hideSystemUI(mContext);
+    }
+
+    private void showSystemUI() {
+        SystemUiUtils.showSystemUI(mContext);
+    }
+    //===================================hide system ui===============================================================
+
+    //------------------- full screen mode -----------------------------//
     private void changeToNormalScreenMode() {
         ViewGroup windowView = (ViewGroup) ContextUtil.scanForActivity(mContext)
                 .findViewById(Window.ID_ANDROID_CONTENT);
@@ -173,7 +203,7 @@ public class DefaultPlayerPresenter implements PlayerPresenter, TextureView.Surf
         fullScreenViewContainer.addView(videoView);
         windowView.addView(fullScreenView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
     }
-
+    //------------------- full screen mode -----------------------------//
 
     private void removeParent(View view) {
         if (view != null) {
@@ -273,6 +303,21 @@ public class DefaultPlayerPresenter implements PlayerPresenter, TextureView.Surf
         }
     }
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        int screenOrientation = newConfig.orientation; //获取屏幕方向
+        //change to landscape
+        if (screenOrientation == Configuration.ORIENTATION_LANDSCAPE) {
+            Log.d(TAG, " change to land");
+
+        }
+        //change to portrait
+        else if (screenOrientation == Configuration.ORIENTATION_PORTRAIT) {
+            Log.d(TAG, " change to line");
+
+        }
+    }
+
     //============================== for texture view==============================
     @Override
     public void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture, int i, int i1) {
@@ -331,6 +376,9 @@ public class DefaultPlayerPresenter implements PlayerPresenter, TextureView.Surf
 
     //============================== for surface view==============================
 
+
+
+    //============================== this part can move to player class ===========
     private Runnable mUpdateProgressAction = new UpdateProgress();
 
     //update Progress action
@@ -358,5 +406,6 @@ public class DefaultPlayerPresenter implements PlayerPresenter, TextureView.Surf
             updateProgress();
         }
     }
+    //============================== this part can move to player class ===========
 
 }

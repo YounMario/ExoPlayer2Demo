@@ -1,8 +1,10 @@
 package com.example.exoplayersample;
 
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.WindowManager;
 
 import com.example.exoplayersample.video.player.presenter.DefaultPlayerPresenter;
 import com.younchen.myexoplayer.player.Player;
@@ -21,6 +23,7 @@ public class ExoPlayerSample extends AppCompatActivity  {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         setContentView(R.layout.activity_exo_player_sample);
         //create presenter
         mPlayerView = (IPlayerView) findViewById(R.id.player_view);
@@ -31,8 +34,15 @@ public class ExoPlayerSample extends AppCompatActivity  {
     }
 
     @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mDefaultPresenter.onConfigurationChanged(newConfig);
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         mDefaultPresenter.release();
     }
+
 }

@@ -17,4 +17,6 @@ public interface VideoControlListener {
     void onSpeedUp();
 
     void onSpeedDown();
+
+    void onFocusChanged(boolean hasFocus);
 }

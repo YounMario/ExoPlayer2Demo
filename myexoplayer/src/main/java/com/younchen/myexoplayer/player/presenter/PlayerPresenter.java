@@ -1,5 +1,7 @@
 package com.younchen.myexoplayer.player.presenter;
 
+import android.content.res.Configuration;
+
 import com.younchen.myexoplayer.player.Player;
 import com.younchen.myexoplayer.player.view.IPlayerView;
 
@@ -16,4 +18,6 @@ public interface PlayerPresenter {
     Player getPlayer();
 
     void release();
+
+    void onConfigurationChanged(Configuration newConfig);
 }

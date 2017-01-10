@@ -7,6 +7,7 @@ import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
@@ -36,11 +37,9 @@ public class DefaultPlayerView extends RelativeLayout implements IPlayerView, Vi
 
     private ImageView mPlayBtn;
     private ProgressBar mLoadingBar;
-    private ImageView mFullScreenBtn;
 
     private VideoControlListener mVideoControlListener;
 
-    private boolean mIsFullScreen;
     private ViewGroup mPlayerContainer;
     private ViewGroup mPlayerView;
 
@@ -49,6 +48,11 @@ public class DefaultPlayerView extends RelativeLayout implements IPlayerView, Vi
     private ImageView mFastForwardBtn;
     private ImageView mRewindBtn;
     private AspectRatioFrameLayout mVideoViewContainer;
+
+    private LinearLayout mBottomControllBar;
+    private RelativeLayout mTitleLayout;
+
+    private boolean mHasFocus;
 
     private static final String TAG = "DefaultPlayerView";
 
@@ -68,7 +72,7 @@ public class DefaultPlayerView extends RelativeLayout implements IPlayerView, Vi
     }
 
     private void initData() {
-        mIsFullScreen = false;
+        mHasFocus = false;
     }
 
     private void initEvent() {
@@ -119,19 +123,19 @@ public class DefaultPlayerView extends RelativeLayout implements IPlayerView, Vi
 
         mPlayerView = (RelativeLayout) findViewById(R.id.video_player_view);
 
-        mFullScreenBtn = (ImageView) findViewById(R.id.btn_full_screen);
-        mFullScreenBtn.setOnClickListener(this);
-        mFullScreenBtn.setImageResource(R.drawable.icon_full_screen);
-
         mSubtitleView = (TextView) findViewById(R.id.subtitle_view);
         mFastForwardBtn = (ImageView) findViewById(R.id.btn_fast_forward);
         mRewindBtn = (ImageView) findViewById(R.id.btn_rewind);
 
         mFastForwardBtn.setOnClickListener(this);
         mRewindBtn.setOnClickListener(this);
+        mPlayerContainer.setOnClickListener(this);
 
         mVideoViewContainer = (AspectRatioFrameLayout) findViewById(R.id.video_view_container);
-        mVideoViewContainer.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIXED_WIDTH);
+        //mVideoViewContainer.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIXED_WIDTH);
+
+        mBottomControllBar = (LinearLayout) findViewById(R.id.control_panel);
+        mTitleLayout = (RelativeLayout) findViewById(R.id.layout_title);
     }
 
 
@@ -186,21 +190,6 @@ public class DefaultPlayerView extends RelativeLayout implements IPlayerView, Vi
     public void onBufferChanged(int currentBuffer) {
     }
 
-    private void onFullScreenMode() {
-        mIsFullScreen = true;
-        mFullScreenBtn.setImageResource(R.drawable.icon_normal_screen);
-        if (mVideoControlListener != null) {
-            mVideoControlListener.onEnterFullScreenMode();
-        }
-    }
-
-    private void onQuitFullScreenMode() {
-        mIsFullScreen = false;
-        mFullScreenBtn.setImageResource(R.drawable.icon_full_screen);
-        if (mVideoControlListener != null) {
-            mVideoControlListener.onQuitFullScreenMode();
-        }
-    }
 
     @Override
     public void onProgressChanged(int progress) {
@@ -229,27 +218,51 @@ public class DefaultPlayerView extends RelativeLayout implements IPlayerView, Vi
         }
     }
 
+    @Override
+    public void onOrientationChanged(boolean isLandSpace) {
+        if(isLandSpace){
+            mPlayerContainer.setFitsSystemWindows(false);
+            mPlayerContainer.requestFitSystemWindows();
+        }else{
+            mPlayerContainer.setFitsSystemWindows(true);
+            mPlayerContainer.requestFitSystemWindows();
+        }
+    }
+
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btn_full_screen:
-                if (mIsFullScreen) {
-                    onQuitFullScreenMode();
-                } else {
-                    onFullScreenMode();
-                }
-                break;
             case R.id.btn_fast_forward:
-                if(mVideoControlListener!= null){
+                if (mVideoControlListener != null) {
                     mVideoControlListener.onSpeedUp();
                 }
                 break;
             case R.id.btn_rewind:
-                if(mVideoControlListener!= null){
+                if (mVideoControlListener != null) {
                     mVideoControlListener.onSpeedDown();
                 }
                 break;
+            case R.id.player_container:
+                if (mVideoControlListener != null) {
+                    mHasFocus = !mHasFocus;
+                    mVideoControlListener.onFocusChanged(mHasFocus);
+                }
+                if (mHasFocus) {
+                    showControlBar();
+                } else {
+                    hideControlBar();
+                }
         }
+    }
+
+    private void hideControlBar() {
+        mBottomControllBar.setVisibility(GONE);
+        mTitleLayout.setVisibility(GONE);
+    }
+
+    private void showControlBar() {
+        mBottomControllBar.setVisibility(VISIBLE);
+        mTitleLayout.setVisibility(VISIBLE);
     }
 }

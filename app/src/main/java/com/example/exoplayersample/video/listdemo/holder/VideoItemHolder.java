@@ -221,6 +221,11 @@ public class VideoItemHolder extends RecyclerView.ViewHolder implements Playable
     }
 
     @Override
+    public void onOrientationChanged(boolean isLandSpace) {
+
+    }
+
+    @Override
     public void onPausePlay() {
 
     }
