@@ -15,7 +15,7 @@ import com.example.exoplayersample.video.listdemo.manager.VideoPlayManager;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class VideoListActivity extends AppCompatActivity {
 
     private RecyclerView mRecyclerView;
     private VideoListAdapter mAdapter;
